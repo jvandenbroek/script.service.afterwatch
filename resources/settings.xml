@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+	<!-- FILE MANAGEMENT -->
+	<category label="30100">
+		<setting label="30102" type="lsep"/>
+		<setting label="30104" id="fm_movies_manage" type="enum" lvalues="30105|30132|30133" default="0"/>
+		<setting label="30101" id="fm_movies_destination" type="folder" source="video" enable="eq(-1,1)"/>
+		<setting label="30111" id="fm_movies_structure" type="enum" lvalues="30134|30135" default="0" enable="!eq(-2,0)"/>
+		<setting label="30112" id="fm_movies_remove_empty" type="bool" default="true" enable="!eq(-3,0)"/>
+		<setting label="30103" type="lsep"/>
+		<setting label="30104" id="fm_episodes_manage" type="enum" lvalues="30105|30132|30133" default="0"/>
+		<setting label="30101" id="fm_episodes_destination" type="folder" source="video" enable="eq(-1,1)"/>
+		<setting label="30111" id="fm_episodes_structure" type="enum" lvalues="30136|30137" default="0" enable="!eq(-2,0)"/>
+		<setting label="30112" id="fm_episodes_remove_empty" type="bool" default="true" enable="!eq(-3,0)"/>
+	</category>
+	<!-- PROPERTIES -->
+	<category label="30700">
+		<setting label="30102" type="lsep"/>
+		<setting label="30701" id="pt_movies_playcount" type="bool" default="false"/>
+		<setting label="30702" id="pt_movies_tag" type="bool" default="false"/>
+		<setting label="30103" type="lsep"/>
+		<setting label="30701" id="pt_episodes_playcount" type="bool" default="false"/>
+	</category>
+	<!-- RATING -->
+	<category label="30200">
+		<setting label="30102" type="lsep"/>
+<!--		<setting label="30201" id="rt_movies_imdb" type="bool" default="false"/> -->
+		<setting label="30204" id="rt_movies_lib" type="bool" default="false"/>
+		<setting label="30205" id="rt_movies_tag" type="bool" default="false"/>
+		<setting label="30206" id="rt_movies_tag_text" type="text" default="My rating: %s" enable="eq(-1,true)"/>
+		<setting label="30103" type="lsep"/>
+		<setting label="30204" id="rt_episodes_lib" type="bool" default="false"/>
+<!--		<setting label="30250" type="lsep"/>
+		<setting label="30211" id="rt_imdb_user" type="text" default="" enable="eq(-7,true)"/>
+		<setting label="30212" id="rt_imdb_pass" type="text" option="hidden" default="" enable="eq(-8,true)"/> -->
+	</category>
+	<!-- RECOMMENDED -->
+<!--	<category label="30300">
+		<setting label="30102" type="lsep"/>
+		<setting label="30301" id="rc_movies_imdb" type="bool" default="false"/>
+	</category> -->
+	<!-- POST -->
+	<category label="30400">
+		<setting label="30102" type="lsep"/>
+<!--		<setting label="30409" id="ps_browser_imdb" type="bool" default="false"/> -->
+		<setting label="30402" id="ps_movies_quit_menu" type="bool" default="false"/>
+		<setting label="30407" id="ps_movies_logoff" type="bool" default="false"/>
+		<setting label="30404" id="ps_movies_display_off" type="bool" default="false"/>
+		<setting label="30103" type="lsep"/>
+		<setting label="30402" id="ps_episodes_quit_menu" type="bool" default="false"/>
+		<setting label="30407" id="ps_episodes_logoff" type="bool" default="false"/>
+		<setting label="30404" id="ps_episodes_display_off" type="bool" default="false"/>
+	</category>
+	<!-- ADVANCED -->
+	<category label="30405">
+		<setting label="30401" id="confirm" type="bool" default="true"/>
+		<setting label="30410" id="wait_dialog" type="number" default="0" enable="eq(-1,true)"/>
+		<setting label="30408" id="fm_warn" type="number" default="10"/>
+		<setting label="30403" id="assume" type="slider" range="0,100" option="percent" default="90"/>
+		<setting label="30406" id="fm_alternate" type="bool" default="false"/>
+		<setting label="30999" id="hide_progress" type="bool" default="false"/>
+		<setting label="30411" id="update_library" type="bool" default="true"/>
+		<setting label="30412" id="debug" type="bool" default="false"/>
+	</category>
+</settings>

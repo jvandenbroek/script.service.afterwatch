@@ -1,0 +1,104 @@
+0.9.1 (2016-02-16):
+* Removed non working functions (IMDb etc)
+* Rewrote functions to fix actions on SMB and NFS shares (use alternative file method)
+* Clean up library after moving/deleting optional
+* Optional confirm dialog delay, fixes interaction with other add-ons (Trakt rating dialog in my case)
+* Code is tested with Krypton, but should be compatible with at least Helix (Kodi v14)
+* Many thanks to Pedro Pinto (r.pynto@gmail.com) for creating the original add-on
+
+0.9.0 (23-01-2014):
+* New feature: Open IMDb in browser
+* Bugfixes
+
+0.8.5 (17-01-2014):
+* Bugfixes
+
+0.8.4 (22-12-2013):
+* Minor changes
+
+0.8.3 (15-12-2013):
+* Bugfix: error starting
+
+0.8.2 (15-12-2013):
+* Bugfix: progress dialog not showing in frodo
+* Bugfix: error in preserve playcount/set tag if not in lib
+* Bugfix: recommended not working due to change in imdb site
+* Other small improvements
+
+0.8.1 (12-12-2013):
+* Bugfix: error when updating if progress dialog disabled
+
+0.8.0 (10-12-2013):
+* New feature: single folder structure for episodes
+* New feature: warning when deleting/moving many files
+* Bugfix: episodes broken
+* Bugfix: single folder files matching
+
+0.7.0 (03-12-2013):
+* New feature: preserve watched status (playcount)
+* New feature: set custom tag (gotham)
+* Improvement: separated post modules for movies/episodes
+* Bugfix: playcount when moving
+
+0.6.1 (29-11-2013):
+* Bugfix: broken addon
+
+0.6.0 (29-11-2013):
+* New feature: new progress bar (Gotham only)
+* New feature: Logoff user (post)
+* New feature: Show quit menu (post)
+* New feature: error dialogs
+* Improvement: rewrite progress handling, actions are divided between pre (normal) and post
+* Improvement: all confirm dialogs show before processing starts
+* Improvement: detect no internet connection when needed
+* Improvement: detect needed settings not setted while processing (user, pass, paths)
+* Other small improvements
+
+0.5.4 (12-11-2013):
+* Bugfix addon could not iniciate
+
+0.5.3 (06-11-2013):
+* Added option to set file management alternate method
+* Cleaned settings (please check your settings)
+
+0.5.2 (16-09-2013):
+* Improvements in file management, and change lib to xbmcvfs
+
+0.5.1 (08-09-2013):
+* Set 'assume as watched' to 100% to disable this feature (fix performance issues on slower machines)
+* Added option to hide progress dialog
+
+0.5.0 (02-06-2013):
+* Complete rewrite and bugfixing, plz check addon settings
+* Turn off screen (windows only)
+* Rate episode on library
+* Option to rate only library
+* Single progress dialog
+* Scan/clean library improvements
+* Recommendations from imdb mobile and english titles
+
+0.4.1 (26-04-2013):
+* Bugfix
+
+0.4.0 (26-04-2013):
+* People who liked this also liked
+* Small improvements
+
+0.3.0 (26-04-2013):
+* Added option to set tag with personal rating
+* Bugfix: Assume as watched on stop
+
+0.2.3 (25-04-2013):
+* Loading dialogs
+* Bugfix: deleting/moving folders inside folders
+* Bugfix: rating 1 / rating cancel
+* Other improvements
+
+0.2.2 (23-04-2013):
+* New icon and data
+
+0.2.1 (22-04-2013):
+* Bugfix: rating in library not set when moving
+
+0.1.0 (20-04-2013):
+* Initial release!
