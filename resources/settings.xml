@@ -24,25 +24,15 @@
 	<!-- RATING -->
 	<category label="30200">
 		<setting label="30102" type="lsep"/>
-<!--		<setting label="30201" id="rt_movies_imdb" type="bool" default="false"/> -->
 		<setting label="30204" id="rt_movies_lib" type="bool" default="false"/>
 		<setting label="30205" id="rt_movies_tag" type="bool" default="false"/>
 		<setting label="30206" id="rt_movies_tag_text" type="text" default="My rating: %s" enable="eq(-1,true)"/>
 		<setting label="30103" type="lsep"/>
 		<setting label="30204" id="rt_episodes_lib" type="bool" default="false"/>
-<!--		<setting label="30250" type="lsep"/>
-		<setting label="30211" id="rt_imdb_user" type="text" default="" enable="eq(-7,true)"/>
-		<setting label="30212" id="rt_imdb_pass" type="text" option="hidden" default="" enable="eq(-8,true)"/> -->
 	</category>
-	<!-- RECOMMENDED -->
-<!--	<category label="30300">
-		<setting label="30102" type="lsep"/>
-		<setting label="30301" id="rc_movies_imdb" type="bool" default="false"/>
-	</category> -->
 	<!-- POST -->
 	<category label="30400">
 		<setting label="30102" type="lsep"/>
-<!--		<setting label="30409" id="ps_browser_imdb" type="bool" default="false"/> -->
 		<setting label="30402" id="ps_movies_quit_menu" type="bool" default="false"/>
 		<setting label="30407" id="ps_movies_logoff" type="bool" default="false"/>
 		<setting label="30404" id="ps_movies_display_off" type="bool" default="false"/>
