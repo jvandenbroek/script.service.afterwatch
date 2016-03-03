@@ -1,3 +1,6 @@
+0.9.2 (2016-03-03):
+* Fix for alternative file method on TV episodes when using SMB/NFS shares.
+
 0.9.1 (2016-02-16):
 * Removed non working functions (IMDb etc)
 * Rewrote functions to fix actions on SMB and NFS shares (use alternative file method)
