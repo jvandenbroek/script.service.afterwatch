@@ -141,7 +141,7 @@ class Movie(Video):
 			self.path = xbmc.validatePath(p)
 		else:
 			self.path = os.path.abspath(p)
-		log("Source path: %s" % self.path)
+		log("Movie source path: %s" % self.path)
 		self.title = j['result']['item']['title']
 		self.playcount = j['result']['item']['playcount']
 		self.imdb = j['result']['item']['imdbnumber']
@@ -396,8 +396,11 @@ class Episode(Video):
 		self.type = 'episode'
 		self.episodeid = j['result']['item']['id']
 		p = j['result']['item']['file']
-		self.path = os.path.abspath(p)
-		log("Source path: %s" % self.path)
+		if setting('fm_alternate') == 'true':
+			self.path = xbmc.validatePath(p)
+		else:
+			self.path = os.path.abspath(p)
+		log("Episode source path: %s" % self.path)
 		self.title = j['result']['item']['title']
 		self.playcount = j['result']['item']['playcount']
 		self.rating = None

@@ -3,7 +3,7 @@
 * Rewrote functions to fix actions on SMB and NFS shares (use alternative file method)
 * Clean up library after moving/deleting optional
 * Optional confirm dialog delay, fixes interaction with other add-ons (Trakt rating dialog in my case)
-* Code is tested with Krypton, but should be compatible with at least Helix (Kodi v14)
+* Code is tested with Kodi 17 (Krypton), but should be compatible with at least Kodi 14 (Helix)
 * Many thanks to Pedro Pinto (r.pynto@gmail.com) for creating the original add-on
 
 0.9.0 (23-01-2014):
