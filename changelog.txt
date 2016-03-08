@@ -1,3 +1,6 @@
+0.9.3 (2016-03-08):
+* Delete or move all files matching video filename minus the extension.
+
 0.9.2 (2016-03-03):
 * Fix for alternative file method on TV episodes when using SMB/NFS shares.
 

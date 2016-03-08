@@ -457,6 +457,7 @@ class Episode(Video):
 			alt_method = setting('fm_alternate') == 'true'
 			remove_empty = setting('fm_episodes_remove_empty') == 'true'
 			match = os.path.splitext(os.path.basename(self.path))[0]
+			log("__delete, match: %s" % match)
 			count = utilfile.count_manage_files(alt_method, source, match)
 			if not dialog_warning(lang(30133), count):
 				raise Exception(lang(30609))

@@ -58,7 +58,7 @@ def __move_files(source, destination, match, del_empty):
 	# move files from source to destination if match
 	files = [f for f in os.listdir(source) if os.path.isfile(os.path.join(source, f))]
 	for f in files:
-		if match == os.path.splitext(f)[0]:
+		if os.path.splitext(f)[0].startswith(match):
 			shutil.move(os.path.join(source, f), destination)
 	# delete source directory if empty
 	if del_empty and len(os.listdir(source)) == 0:
@@ -71,7 +71,7 @@ def __delete_files(source, match, del_empty):
 	# delete files from source if match
 	files = [f for f in os.listdir(source) if os.path.isfile(os.path.join(source, f))]
 	for f in files:
-		if match == os.path.splitext(f)[0]:
+		if os.path.splitext(f)[0].startswith(match):
 			f = os.path.join(source, f)
 			#os.chmod(f, 0777)
 			os.remove(f)
@@ -97,13 +97,14 @@ def __copy_files_alt(source, destination, match):
 	# move files from source to destination if match
 	dirs, files = xbmcvfs.listdir(source)
 	for f in files:
-		if match == os.path.splitext(f)[0]:
+		if os.path.splitext(f)[0].startswith(match):
 			src = os.path.join(source, f)
 			dest = os.path.join(destination, f)
 			xbmcvfs.copy(src, dest) # todo error
 
 def __delete_directory_alt(source):
 	dirs, files = xbmcvfs.listdir(source)
+	log("_delete_directory_alt dirs: %s files: %s" % dirs, files)
 	for d in dirs:
 		d = os.path.join(source, d)
 		__delete_directory(d)
@@ -116,7 +117,7 @@ def __delete_files_alt(source, match, del_empty):
 	# delete files from source if match
 	dirs, files = xbmcvfs.listdir(source)
 	for f in files:
-		if match == os.path.splitext(f)[0]:
+		if os.path.splitext(f)[0].startswith(match):
 			f = os.path.join(source, f)
 			xbmcvfs.delete(f)
 	# delete source directory if empty
