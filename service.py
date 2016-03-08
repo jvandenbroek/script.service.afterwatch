@@ -141,7 +141,7 @@ class Movie(Video):
 			self.path = xbmc.validatePath(p)
 		else:
 			self.path = os.path.abspath(p)
-		log("Movie source path: %s" % self.path)
+		log("Movie self.path: %s" % self.path)
 		self.title = j['result']['item']['title']
 		self.playcount = j['result']['item']['playcount']
 		self.imdb = j['result']['item']['imdbnumber']
@@ -171,8 +171,8 @@ class Movie(Video):
 				count = utilfile.count_manage_directory(alt_method, source)
 				if not dialog_warning(lang(30132), count):
 					raise Exception(lang(30609))
-				log("Movie source path (lib/title/files.*): %s" % source)
-				log("Movie destination path (lib/title/files.*): %s" % destination)
+				log("Movie.__move source (multiple): %s" % source)
+				log("Movie.__move destination (multiple): %s" % destination)
 				utilfile.move_directory(alt_method, source, destination)
 				self.path = os.path.join(destination, self.path.split(os.sep)[-2], os.path.basename(self.path))
 				log("Self path (lib/title/files.*): %s" % self.path)
@@ -181,8 +181,8 @@ class Movie(Video):
 				count = utilfile.count_manage_files(alt_method, source, match)
 				if not dialog_warning(lang(30132), count):
 					raise Exception(lang(30609))
-				log("Movie source path: %s" % source)
-				log("Movie destination path: %s" % destination)
+				log("Movie.__move source (single): %s" % source)
+				log("Movie.__move destination (single): %s" % destination)
 				utilfile.move_files(alt_method, source, destination, match)
 				self.path = os.path.join(destination, os.path.basename(self.path))
 				log("Self path: %s" % self.path)
@@ -216,6 +216,7 @@ class Movie(Video):
 			else: # single folder
 				match = os.path.splitext(os.path.basename(self.path))[0]
 				count = utilfile.count_manage_files(alt_method, source, match)
+				log("Movie.__delete, match: %s" % match)
 				if not dialog_warning(lang(30133), count):
 					raise Exception(lang(30609))
 				utilfile.delete_files(alt_method, source, match, remove_empty)
@@ -400,7 +401,7 @@ class Episode(Video):
 			self.path = xbmc.validatePath(p)
 		else:
 			self.path = os.path.abspath(p)
-		log("Episode source path: %s" % self.path)
+		log("Episode self.path: %s" % self.path)
 		self.title = j['result']['item']['title']
 		self.playcount = j['result']['item']['playcount']
 		self.rating = None
@@ -425,13 +426,13 @@ class Episode(Video):
 			count = utilfile.count_manage_files(alt_method, source, match)
 			if not dialog_warning(lang(30132), count):
 				raise Exception(lang(30609))
-			log("Episode source path: %s" % source)
+			log("Episode.__move source path: %s" % source)
 			if setting('fm_episodes_structure') == '0': # multiple folders
 				destination = os.path.join(destination, self.path.split(os.sep)[-3], self.path.split(os.sep)[-2])
-				log("Episode destination path (lib/title/season/files.*): %s" % destination)
+				log("Episode.__move destination (multiple): %s" % destination)
 			else: # single folder
 				destination = os.path.join(destination, self.path.split(os.sep)[-2])
-				log("Episode destination path (lib/title/files.*): %s" % destination)
+				log("Episode.__move destination (single): %s" % destination)
 			utilfile.move_files(alt_method, source, destination, match, True)
 			self.path = os.path.join(destination, os.path.basename(self.path))
 			if setting('update_library') == 'true':
@@ -457,7 +458,7 @@ class Episode(Video):
 			alt_method = setting('fm_alternate') == 'true'
 			remove_empty = setting('fm_episodes_remove_empty') == 'true'
 			match = os.path.splitext(os.path.basename(self.path))[0]
-			log("__delete, match: %s" % match)
+			log("Episode.__delete, match: %s" % match)
 			count = utilfile.count_manage_files(alt_method, source, match)
 			if not dialog_warning(lang(30133), count):
 				raise Exception(lang(30609))

@@ -104,7 +104,6 @@ def __copy_files_alt(source, destination, match):
 
 def __delete_directory_alt(source):
 	dirs, files = xbmcvfs.listdir(source)
-	log("_delete_directory_alt dirs: %s files: %s" % dirs, files)
 	for d in dirs:
 		d = os.path.join(source, d)
 		__delete_directory(d)
