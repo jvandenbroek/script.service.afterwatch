@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.afterwatch" name="After Watch" version="0.9.3" provider-name="jvandenbroek">
+<addon id="script.afterwatch" name="After Watch" version="0.9.4" provider-name="jvandenbroek">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
 	</requires>

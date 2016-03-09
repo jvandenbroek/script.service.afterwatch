@@ -53,6 +53,20 @@ def dialog_rating(title):
 		rating = 10 - i
 		return rating
 
+def ValueErrorHandler(err):
+	if err[0] == 'xbmcvfs.mkdirs':
+		log("ValueError Exception: Error creating folder: %s" % err[1])
+		dialog_error(lang(30611) + ' %s' % err[1])
+	if err[0] == 'xbmcvfs.rmdir':
+		log("ValueError Exception: Error removing folder: %s" % err[1])
+		dialog_error(lang(30612) + ' %s' % err[1])
+	if err[0] == 'xbmcvfs.delete':
+		log("ValueError Exception: Error removing file: %s" % err[1])
+		dialog_error(lang(30613) + ' %s' % err[1])
+	if err[0] == 'xbmcvfs.copy':
+		log("ValueError Exception: Error copying %s to %s" % (err[1], err[2]))
+		dialog_error(lang(30614) + ' %s -> %s' % (err[1], err[2]))
+
 ## PROGRESS
 class Progress:
 	def __init__(self, steps):
@@ -195,6 +209,8 @@ class Movie(Video):
 				utilxbmc.set_movie_playcount(self.movieid, self.playcount+1)
 		except OSError:
 			dialog_error(lang(30610))
+		except ValueError as err:
+			ValueErrorHandler(err)
 		except Exception, e:
 			dialog_error(e.message)
 		finally:
@@ -227,6 +243,8 @@ class Movie(Video):
 			self.path = None
 		except OSError:
 			dialog_error(lang(30610))
+		except ValueError as err:
+			ValueErrorHandler(err)
 		except Exception, e:
 			dialog_error(e.message)
 		finally:
@@ -444,6 +462,8 @@ class Episode(Video):
 				utilxbmc.set_episode_playcount(self.episodeid, self.playcount+1)
 		except OSError:
 			dialog_error(lang(30610))
+		except ValueError as err:
+			ValueErrorHandler(err)
 		except Exception, e:
 			dialog_error(e.message)
 		finally:
@@ -470,6 +490,8 @@ class Episode(Video):
 			self.path = None
 		except OSError:
 			dialog_error(lang(30610))
+		except ValueError as err:
+			ValueErrorHandler(err)
 		except Exception, e:
 			dialog_error(e.message)
 		finally:

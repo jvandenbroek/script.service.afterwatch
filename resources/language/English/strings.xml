@@ -86,4 +86,8 @@
 	<string id="30608">No internet connection</string>
 	<string id="30609">Canceled due to quantity of files</string>
 	<string id="30610">You do not have permissions to move/delete this file</string>
+	<string id="30611">Error creating folder</string>
+	<string id="30612">Error removing folder</string>
+	<string id="30613">Error removing file</string>
+	<string id="30614">Error copying</string>
 </strings>

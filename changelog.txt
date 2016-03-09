@@ -1,3 +1,7 @@
+0.9.4 (2016-03-09):
+* Directory removal fix alternate file method
+* Added error handlers for alternate file method operations
+
 0.9.3 (2016-03-08):
 * Delete or move all files matching video filename minus the extension.
 

@@ -81,36 +81,42 @@ def __delete_files(source, match, del_empty):
 
 def __copy_directory_alt(source, destination):
 	destination = os.path.join(destination, os.path.basename(source))
-	xbmcvfs.mkdirs(destination) # todo error if exists?
+	if not xbmcvfs.mkdirs(destination):
+		raise ValueError('xbmcvfs.mkdirs', destination)
 	dirs, files = xbmcvfs.listdir(source)
 	for f in files:
 		src = os.path.join(source, f)
 		dest = os.path.join(destination, f)
-		xbmcvfs.copy(src, dest)
+		if not xbmcvfs.copy(src, dest):
+			raise ValueError('xbmcvfs.copy', src, dest)
 	for d in dirs:
 		d = os.path.join(source, d)
 		__copy_directory(d, destination)
 
 def __copy_files_alt(source, destination, match):
 	# create directories if needed
-	xbmcvfs.mkdirs(destination)
+	if not xbmcvfs.mkdirs(destination):
+		raise ValueError('xbmcvfs.mkdirs', destination)
 	# move files from source to destination if match
 	dirs, files = xbmcvfs.listdir(source)
 	for f in files:
 		if os.path.splitext(f)[0].startswith(match):
 			src = os.path.join(source, f)
 			dest = os.path.join(destination, f)
-			xbmcvfs.copy(src, dest) # todo error
+			if not xbmcvfs.copy(src, dest):
+				raise ValueError('xbmcvfs.copy', src, dest)
 
 def __delete_directory_alt(source):
 	dirs, files = xbmcvfs.listdir(source)
 	for d in dirs:
 		d = os.path.join(source, d)
-		__delete_directory(d)
+		if not xbmcvfs.rmdir(d):
+			raise ValueError('xbmcvfs.rmdir', d)
 	for f in files:
 		f = os.path.join(source, f)
 		xbmcvfs.delete(f)
-	xbmcvfs.rmdir(source)
+	if not xbmcvfs.rmdir(source):
+		raise ValueError('xbmcvfs.rmdir', source)
 
 def __delete_files_alt(source, match, del_empty):
 	# delete files from source if match
@@ -118,10 +124,12 @@ def __delete_files_alt(source, match, del_empty):
 	for f in files:
 		if os.path.splitext(f)[0].startswith(match):
 			f = os.path.join(source, f)
-			xbmcvfs.delete(f)
+			if not xbmcvfs.delete(f):
+				raise ValueError('xbmcvfs.delete', f)
 	# delete source directory if empty
 	if del_empty and len(xbmcvfs.listdir(source)) == 0:
-		xbmcvfs.rmdir(source)
+		if not xbmcvfs.rmdir(source):
+			raise ValueError('xbmcvfs.rmdir', source)
 
 ## PRIVATE COUNT
 def __count_manage_directory(source):
