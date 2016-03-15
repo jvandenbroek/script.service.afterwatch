@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import xbmc
 import json
 
@@ -47,7 +48,7 @@ def set_episode_playcount(episodeid, playcount):
 def set_movie_rating(movieid, rating):
 	cmd = '{"jsonrpc":"2.0","method":"VideoLibrary.SetMovieDetails","params":{"movieid":%d,"rating":%s},"id":1}' % (movieid, str(rating))
 	xbmc.executeJSONRPC(cmd)
-	
+
 def set_episode_rating(episodeid, rating):
 	cmd = '{"jsonrpc":"2.0","method":"VideoLibrary.SetEpisodeDetails","params":{"episodeid":%d,"rating":%s},"id":1}' % (episodeid, str(rating))
 	xbmc.executeJSONRPC(cmd)
@@ -55,7 +56,7 @@ def set_episode_rating(episodeid, rating):
 def set_movie_tag(movieid, tag):
 	cmd = '{"jsonrpc":"2.0","method":"VideoLibrary.SetMovieDetails","params":{"movieid":%d,"tag":["%s"]},"id":1}' % (movieid, tag)
 	xbmc.executeJSONRPC(cmd)
-	
+
 def play_movie(movieid):
 	cmd = '{"jsonrpc":"2.0","method":"Player.Open","params":{"item":{"movieid":%d}},"id":1}' % movieid
 	xbmc.executeJSONRPC(cmd)

@@ -16,19 +16,21 @@
 	<!-- PROPERTIES -->
 	<category label="30700">
 		<setting label="30102" type="lsep"/>
-		<setting label="30701" id="pt_movies_playcount" type="bool" default="false"/>
-		<setting label="30702" id="pt_movies_tag" type="bool" default="false"/>
+		<setting label="30701" id="pt_movies_playcount" type="bool" default="false" enable="eq(4,false)"/>
+		<setting label="30702" id="pt_movies_tag" type="bool" default="false" enable="eq(3,false)"/>
 		<setting label="30103" type="lsep"/>
-		<setting label="30701" id="pt_episodes_playcount" type="bool" default="false"/>
+		<setting label="30701" id="pt_episodes_playcount" type="bool" default="false" enable="eq(1,false)"/>
+		<setting label="30411" id="remove_video" type="bool" default="true" visible="false"/>
 	</category>
 	<!-- RATING -->
 	<category label="30200">
 		<setting label="30102" type="lsep"/>
-		<setting label="30204" id="rt_movies_lib" type="bool" default="false"/>
-		<setting label="30205" id="rt_movies_tag" type="bool" default="false"/>
-		<setting label="30206" id="rt_movies_tag_text" type="text" default="My rating: %s" enable="eq(-1,true)"/>
+		<setting label="30204" id="rt_movies_lib" type="bool" default="false" enable="eq(5,false)"/>
+		<setting label="30205" id="rt_movies_tag" type="bool" default="false" enable="eq(4,false)"/>
+		<setting label="30206" id="rt_movies_tag_text" type="text" default="My rating: %s" enable="eq(3,false)"/>
 		<setting label="30103" type="lsep"/>
-		<setting label="30204" id="rt_episodes_lib" type="bool" default="false"/>
+		<setting label="30204" id="rt_episodes_lib" type="bool" default="false" enable="eq(1,false)"/>
+		<setting label="30411" id="remove_video" type="bool" default="true" visible="false"/>
 	</category>
 	<!-- POST -->
 	<category label="30400">
@@ -49,7 +51,8 @@
 		<setting label="30403" id="assume" type="slider" range="0,100" option="percent" default="90"/>
 		<setting label="30406" id="fm_alternate" type="bool" default="false"/>
 		<setting label="30999" id="hide_progress" type="bool" default="false"/>
-		<setting label="30411" id="update_library" type="bool" default="true"/>
-		<setting label="30412" id="debug" type="bool" default="false"/>
+		<setting label="30411" id="remove_video" type="bool" default="true"/>
+		<setting label="30412" id="update_library" type="bool" default="false"/>
+		<setting label="30413" id="debug" type="bool" default="false"/>
 	</category>
 </settings>

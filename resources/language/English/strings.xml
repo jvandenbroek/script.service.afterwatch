@@ -23,13 +23,9 @@
 	<string id="30702">Set custom tag</string>
 	<!-- SETTINGS RATING -->
 	<string id="30200">Rating</string>
-	<string id="30201">Rate IMDb</string>
 	<string id="30204">Rate library</string>
 	<string id="30205">Set tag</string>
 	<string id="30206">Tag text [%s - rating]</string>
-	<string id="30250">IMDb</string>
-	<string id="30211">Username</string>
-	<string id="30212">Password</string>
 	<!-- SETTINGS RECOMMENDED -->
 	<string id="30300">Recommended</string>
 	<string id="30301">Show IMDb 'People who liked this also liked'</string>
@@ -41,26 +37,23 @@
 	<string id="30404">Turn off display [Windows OS]</string>
 	<!-- SETTINGS ADVANCED -->
 	<string id="30405">Advanced</string>
-	<string id="30401">Show confirm dialogs</string>
-	<string id="30410">Delay confirm dialogs (workaround conflicts other add-ons)</string>
+	<string id="30401">Confirm deleting/moving</string>
+	<string id="30410">Delay confirm dialog (workaround conflicts other add-ons)</string>
 	<string id="30408">Warn file management threshold</string>
 	<string id="30403">Assume as watched</string>
 	<string id="30406">Alternate file management method</string>
 	<string id="30999">Hide progress dialog</string>
-	<string id="30411">Clean and update library afterwards</string>
-	<string id="30412">Enable debugging</string>
+	<string id="30411">Remove video from library</string>
+	<string id="30412">Update library</string>
+	<string id="30413">Enable debugging</string>
 	<!-- STEPS -->
 	<string id="30590">detecting library place...</string>
 	<string id="30506">moving files...</string>
 	<string id="30513">updating library...</string>
 	<string id="30514">setting watched...</string>
 	<string id="30516">deleting files...</string>
-	<string id="30519">logging in IMDb...</string>
-	<string id="30520">rating on IMDb...</string>
-	<string id="30521">logging out IMDb...</string>
 	<string id="30522">updating rating...</string>
 	<string id="30524">setting tag...</string>
-	<string id="30527">browsing IMDb...</string>
 	<string id="30528">searching library...</string>
 	<string id="30598">setting old playcount...</string>
 	<string id="30597">setting tag...</string>
@@ -69,21 +62,16 @@
 	<string id="30512">%s - %s rating</string>
 	<string id="30525">%s - Movies destination</string>
 	<string id="30530">%s - Episodes destination</string>
-	<string id="30529">%s - IMDb username</string>
-	<string id="30555">%s - IMDb password</string>
 	<string id="30526">%s?</string>
 	<string id="30509">%s - Recommended</string>
 	<string id="30599">%s - Tag</string>
 	<string id="30588">%s %d files. Are you sure?</string>
 	<!-- ERRORS -->
-	<string id="30601">Episode not in library, cant process</string>
+	<string id="30601">Episode not in library, can't process</string>
 	<string id="30602">Episode already in watched library</string>
 	<string id="30603">Recommended movies not found</string>
 	<string id="30604">Movie not in library, cant process</string>
-	<string id="30605">Cant login in IMDb</string>
-	<string id="30606">Error: cant rate IMDb</string>
 	<string id="30607">Movie already in watched library</string>
-	<string id="30608">No internet connection</string>
 	<string id="30609">Canceled due to quantity of files</string>
 	<string id="30610">You do not have permissions to move/delete this file</string>
 	<string id="30611">Error creating folder</string>

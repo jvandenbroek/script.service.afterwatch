@@ -1,3 +1,8 @@
+0.9.5 (2016-03-15):
+* Added remove from library option (no full clean up necessary)
+* Started splitting and cleaning up code
+* No longer display dialogs for preserve, rating and tagging
+
 0.9.4 (2016-03-09):
 * Directory removal fix alternate file method
 * Added error handlers for alternate file method operations
