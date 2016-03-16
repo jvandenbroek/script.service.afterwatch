@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+import xbmc
 import xbmcgui
 import utilxbmc
 import videolibrary
 from utils import info, lang, setting
+
+monitor = xbmc.Monitor()
 
 class Progress:
 	def __init__(self, steps):
@@ -45,9 +48,9 @@ class Progress:
 	def update_library(self, path=False):
 		if path and setting('remove_video') == 'true':
 			videolibrary.remove_video(path)
-			if self.enable:
-				self.bar.close()
-				self.bar = None
+#			if self.enable:
+#				self.bar.close()
+#				self.bar = None
 		if setting('update_library') == 'true':
 			xbmc.executebuiltin('UpdateLibrary(video)')
 			while not xbmc.getCondVisibility('Library.IsScanningVideo'):

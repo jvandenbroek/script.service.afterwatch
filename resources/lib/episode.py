@@ -2,8 +2,8 @@
 import xbmc
 import os
 import utilxbmc
-from resources.lib.progress import Progress
-from resources.lib import dialog, utilfile, utilxbmc
+import dialog, utilfile, utilxbmc
+from progress import Progress
 from utils import log, info, lang, setting, set_setting, rpc, ValueErrorHandler
 from video import Video
 
@@ -131,7 +131,9 @@ class Episode(Video):
 		rate_lib = False
 		if setting('confirm') == 'true':
 			log("Episode: Show confirm dialog")
-			monitor.waitForAbort(int(setting('wait_dialog')))
+			wait_dialog = setting('wait_dialog')
+			if not (wait_dialog == '' or wait_dialog == '0'):
+				monitor.waitForAbort(int(wait_dialog))
 		if setting('fm_episodes_manage') == '1': # move
 			if dialog.proceed(self.title, lang(30132)):
 				move = True
@@ -151,14 +153,17 @@ class Episode(Video):
 			alt_method = setting('fm_alternate') == 'true'
 			if alt_method:
 				destiny = xbmc.validatePath(setting('fm_episodes_destination'))
+				log("fm_episodes_destination (alt_method):  %s" % destiny)
 			else:
 				destiny = os.path.abspath(setting('fm_episodes_destination'))
+				log("fm_episodes_destination:  %s" % destiny)
 			while not destiny or destiny == '.':
 				destiny = xbmcgui.Dialog().browse(3, lang(30525) % info('name'), 'files')
 				if alt_method:
 					destiny = xbmc.validatePath(destiny)
 				else:
 					destiny = os.path.abspath(destiny)
+
 			set_setting('fm_episodes_destination', destiny)
 		# pre context
 		# pre process

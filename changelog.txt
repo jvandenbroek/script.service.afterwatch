@@ -1,7 +1,9 @@
-0.9.5 (2016-03-15):
+0.9.5 (2016-03-16):
 * Added remove from library option (no full clean up necessary)
-* Started splitting and cleaning up code
 * No longer display dialogs for preserve, rating and tagging
+* Fixed infinite hanging when confirmation dialog delay set to 0 (default) or empty
+* Started splitting and cleaning up code
+* Other minor fixes
 
 0.9.4 (2016-03-09):
 * Directory removal fix alternate file method

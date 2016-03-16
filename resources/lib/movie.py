@@ -2,8 +2,8 @@
 import xbmc
 import os
 import utilxbmc
-from resources.lib.progress import Progress
-from resources.lib import dialog, utilfile, utilxbmc
+import dialog, utilfile, utilxbmc
+from progress import Progress
 from utils import log, info, lang, setting, set_setting, rpc, ValueErrorHandler
 from video import Video
 
@@ -11,7 +11,7 @@ monitor = xbmc.Monitor()
 
 class Movie(Video):
 	def __init__(self):
-		j = utilxbmc.xjson('{"jsonrpc":"2.0","method":"Player.GetItem","params":{"playerid":1,"properties":["file","title","playcount","imdbnumber"]},"id":1}')
+		j = utilxbmc.xjson('{"jsonrpc":"2.0","method":"Player.GetItem","params":{"playerid":1,"properties":["file","title","playcount"]},"id":1}')
 		self.type = 'movie'
 		self.movieid = j['result']['item']['id']
 		p = j['result']['item']['file']
@@ -22,7 +22,6 @@ class Movie(Video):
 		log("Movie: self.path: %s" % self.path)
 		self.title = j['result']['item']['title']
 		self.playcount = j['result']['item']['playcount']
-		self.imdb = j['result']['item']['imdbnumber']
 		self.rating = None
 		self.tag = None
 

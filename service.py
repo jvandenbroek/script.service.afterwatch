@@ -2,13 +2,10 @@
 import os
 import xbmcgui
 from resources.lib import dialog, utilfile, utilxbmc
-#from resources.lib import utilfile
-#from resources.lib import utilxbmc
-from resources.lib.utils import log, info, lang, setting, set_setting, rpc, ValueErrorHandler
+from resources.lib.utils import setting
 from resources.lib.progress import Progress
 from resources.lib.movie import Movie
 from resources.lib.episode import Episode
-
 
 ## PLAYER
 class AfterWatchPlayer(xbmc.Player):
