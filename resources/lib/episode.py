@@ -142,10 +142,11 @@ class Episode(Video):
 			if dialog.proceed(self.title, lang(30133)):
 				delete = True
 				steps += self.DELETE_STEPS
-		if setting('pt_episodes_playcount') == 'true':
+		if not setting('remove_video') == 'true':
+			if setting('pt_episodes_playcount') == 'true':
 				preserve_playcount = True
 				steps += self.PRESERVE_PLAYCOUNT_STEPS
-		if setting('rt_episodes_lib') == 'true':
+			if setting('rt_episodes_lib') == 'true':
 				rate_lib = True
 				steps += self.RATE_LIB_STEPS
 		# pre settings
