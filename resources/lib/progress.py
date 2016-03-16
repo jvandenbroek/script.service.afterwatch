@@ -4,6 +4,7 @@ import xbmcgui
 import utilxbmc
 import videolibrary
 from utils import info, lang, setting
+from utils import log
 
 monitor = xbmc.Monitor()
 
@@ -32,16 +33,16 @@ class Progress:
 			self.bar.update(percent, info('name'), lang(30531) % (self.module_title, msg))
 		self.current += 1
 		self.module_current += 1
-#		log('update: self.current=%s, self.module_current=%s' % (self.current, self.module_current))
+		log('update: self.current=%s, self.module_current=%s' % (self.current, self.module_current))
 
 	def finish_module(self):
-#		log('finish_module: self.module_steps=%s, self.module_current=%s' % (self.module_steps, self.module_current))
+		log('finish_module: self.module_steps=%s, self.module_current=%s' % (self.module_steps, self.module_current))
 		if not self.module_steps == self.module_current:
 			skip = self.module_steps - self.module_current
 			self.current += skip
 			self.module_current += skip
 		percent = self.current * 100 / self.steps
-#		log('finish_module: self.current=%s, self.steps=%s' % (self.current, self.steps))
+		log('finish_module: self.current=%s, self.steps=%s' % (self.current, self.steps))
 		if self.current == self.steps:
 			if self.enable:
 				self.bar.update(100, info('name'), 'Done')

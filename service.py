@@ -24,11 +24,12 @@ class AfterWatchPlayer(xbmc.Player):
 				self.playing = Episode()
 				self.__time()
 
+
 	def onPlayBackEnded(self):
 		if self.playing:
 			self.playing.ended()
 			self.playing = None
-#			log("onPlayBackEnded function ended")
+
 
 	def onPlayBackStopped(self):
 		if self.playing:
@@ -37,7 +38,7 @@ class AfterWatchPlayer(xbmc.Player):
 			if minimum <= percent:
 				self.playing.ended()
 			self.playing = None
-#			log("onPlayBackStopped function ended")
+
 
 	def __time(self):
 		self.current = 0

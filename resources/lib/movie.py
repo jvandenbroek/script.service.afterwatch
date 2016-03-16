@@ -25,6 +25,7 @@ class Movie(Video):
 		self.rating = None
 		self.tag = None
 
+
 	MOVE_STEPS = 4
 	def __move(self, progress):
 		alt_method = setting('fm_alternate') == 'true'
@@ -78,6 +79,7 @@ class Movie(Video):
 		finally:
 			progress.finish_module()
 
+
 	DELETE_STEPS = 2
 	def __delete(self, progress):
 		progress.start_module(lang(30133), self.DELETE_STEPS)
@@ -111,6 +113,7 @@ class Movie(Video):
 		finally:
 			progress.finish_module()
 
+
 	PRESERVE_PLAYCOUNT_STEPS = 1
 	def __preserve_playcount(self, progress):
 		progress.start_module(lang(30701), self.PRESERVE_PLAYCOUNT_STEPS)
@@ -123,6 +126,7 @@ class Movie(Video):
 			dialog.error(e.message)
 		finally:
 			progress.finish_module()
+
 
 	SET_TAG_STEPS = 1
 	def __set_tag(self, progress):
@@ -137,6 +141,7 @@ class Movie(Video):
 		finally:
 			progress.finish_module()
 
+
 	RATE_LIB_STEPS = 1
 	def __rate_lib(self, progress):
 		progress.start_module(lang(30204), self.RATE_LIB_STEPS)
@@ -150,6 +155,7 @@ class Movie(Video):
 			dialog.error(e.message)
 		finally:
 			progress.finish_module()
+
 
 	RATE_TAG_STEPS = 1
 	def __rate_tag(self, progress):
@@ -166,6 +172,7 @@ class Movie(Video):
 			dialog.error(e.message)
 		finally:
 			progress.finish_module()
+
 
 	def ended(self):
 		log("Movie: Playback ended")

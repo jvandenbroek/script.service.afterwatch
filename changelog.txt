@@ -3,6 +3,7 @@
 * No longer display dialogs for preserve, rating and tagging
 * Fixed infinite hanging when confirmation dialog delay set to 0 (default) or empty
 * Started splitting and cleaning up code
+* Renamed add-on to script.service.afterwatch in compliance with Kodi rules
 * Other minor fixes
 
 0.9.4 (2016-03-09):

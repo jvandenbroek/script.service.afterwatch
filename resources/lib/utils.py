@@ -30,6 +30,7 @@ from threading import Condition
 
 __addon__ = xbmcaddon.Addon()
 
+
 def log(msg, level=xbmc.LOGDEBUG):
 	if setting('debug') == 'true':
 		xbmc.log(('[%s] %s' % (info('name'), msg)), level)

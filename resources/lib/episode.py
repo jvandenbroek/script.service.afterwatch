@@ -9,6 +9,7 @@ from video import Video
 
 monitor = xbmc.Monitor()
 
+
 class Episode(Video):
 	def __init__(self):
 		j = utilxbmc.xjson('{"jsonrpc":"2.0","method":"Player.GetItem","params":{"playerid":1,"properties":["file","title","playcount"]},"id":1}')
@@ -23,6 +24,7 @@ class Episode(Video):
 		self.title = j['result']['item']['title']
 		self.playcount = j['result']['item']['playcount']
 		self.rating = None
+
 
 	MOVE_STEPS = 4
 	def __move(self, progress):
@@ -52,9 +54,9 @@ class Episode(Video):
 				destination = os.path.join(destination, self.path.split(os.sep)[-2])
 				log("Episode: move destination (single): %s" % destination)
 			utilfile.move_files(alt_method, source, destination, match, True)
-			self.path = os.path.join(destination, os.path.basename(self.path))
 			progress.update(lang(30513)) # updating library
 			progress.update_library(self.path)
+			self.path = os.path.join(destination, os.path.basename(self.path))
 			self.episodeid = utilxbmc.get_episodeid_by_path(self.path)
 			if self.episodeid: # if still in lib source folders
 				progress.update(lang(30514)) # setting watched
@@ -67,6 +69,7 @@ class Episode(Video):
 			dialog.error(e.message)
 		finally:
 			progress.finish_module()
+
 
 	DELETE_STEPS = 2
 	def __delete(self, progress):
@@ -95,6 +98,7 @@ class Episode(Video):
 		finally:
 			progress.finish_module()
 
+
 	PRESERVE_PLAYCOUNT_STEPS = 1
 	def __preserve_playcount(self, progress):
 		progress.start_module(lang(30701), self.PRESERVE_PLAYCOUNT_STEPS)
@@ -108,6 +112,7 @@ class Episode(Video):
 		finally:
 			progress.finish_module()
 
+
 	RATE_LIB_STEPS = 1
 	def __rate_lib(self, progress):
 		progress.start_module(lang(30204), self.RATE_LIB_STEPS)
@@ -120,6 +125,7 @@ class Episode(Video):
 			dialog.error(e.message)
 		finally:
 			progress.finish_module()
+
 
 	def ended(self):
 		log("Episode: Playback ended")
