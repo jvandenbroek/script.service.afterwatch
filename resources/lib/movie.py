@@ -15,7 +15,8 @@ class Movie(Video):
 		self.type = 'movie'
 		self.movieid = j['result']['item']['id']
 		p = j['result']['item']['file']
-		if setting('fm_alternate') == 'true':
+		if setting('fm_alternate') == 'true' or p.startswith('smb://') or p.startswith('nfs://'):
+			alt_method = True
 			self.path = xbmc.validatePath(p)
 		else:
 			self.path = os.path.abspath(p)
@@ -28,14 +29,14 @@ class Movie(Video):
 
 	MOVE_STEPS = 4
 	def __move(self, progress):
-		alt_method = setting('fm_alternate') == 'true'
 		progress.start_module(lang(30132), self.MOVE_STEPS)
 		try:
 			progress.update(lang(30590)) # detecting library place
-			if alt_method:
-				lib_destiny = xbmc.validatePath(setting('fm_movies_destination'))
+			destination = setting('fm_movies_destination')
+			if alt_method or destination.startswith('smb://') or destination.startswith('nfs://'):
+				lib_destiny = xbmc.validatePath(destination)
 			else:
-				lib_destiny = os.path.abspath(setting('fm_movies_destination'))
+				lib_destiny = os.path.abspath(destination)
 			if setting('fm_movies_structure') == '0':
 				lib_source = os.path.dirname(os.path.dirname(self.path))
 			else:

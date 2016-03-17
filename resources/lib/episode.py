@@ -16,7 +16,8 @@ class Episode(Video):
 		self.type = 'episode'
 		self.episodeid = j['result']['item']['id']
 		p = j['result']['item']['file']
-		if setting('fm_alternate') == 'true':
+		if setting('fm_alternate') == 'true' or p.startswith('smb://') or p.startswith('nfs://'):
+			alt_method = True
 			self.path = xbmc.validatePath(p)
 		else:
 			self.path = os.path.abspath(p)
@@ -28,14 +29,14 @@ class Episode(Video):
 
 	MOVE_STEPS = 4
 	def __move(self, progress):
-		alt_method = setting('fm_alternate') == 'true'
 		progress.start_module(lang(30132), self.MOVE_STEPS)
 		try:
 			progress.update(lang(30590)) # detecting library place
-			if alt_method:
-				lib_destiny = xbmc.validatePath(setting('fm_episodes_destination'))
+			destination = setting('fm_episodes_destination')
+			if alt_method or destination.startswith('smb://') or destination.startswith('nfs://'):
+				lib_destiny = xbmc.validatePath(destination)
 			else:
-				lib_destiny = os.path.abspath(setting('fm_episodes_destination'))
+				lib_destiny = os.path.abspath(destination)
 	 		lib_source = os.path.dirname(os.path.dirname(os.path.dirname(self.path)))
 		 	if lib_destiny == lib_source:
 		 		raise Exception(lang(30602))
@@ -77,7 +78,6 @@ class Episode(Video):
 		try:
 			progress.update(lang(30516)) # deleting files
 			source = os.path.dirname(self.path)
-			alt_method = setting('fm_alternate') == 'true'
 			remove_empty = setting('fm_episodes_remove_empty') == 'true'
 			match = os.path.splitext(os.path.basename(self.path))[0]
 			log("Episode: delete match: %s" % match)

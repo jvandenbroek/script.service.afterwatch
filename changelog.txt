@@ -1,3 +1,7 @@
+0.9.6 (2016-03-17):
+* Always use alternate method if source or destination is a SMB/NFS path (alternate method may be
+  deleted in some future version)
+
 0.9.5 (2016-03-16):
 * Added remove from library option (no full clean up necessary)
 * No longer display dialogs for preserve, rating and tagging
