@@ -15,11 +15,12 @@ class Movie(Video):
 		self.type = 'movie'
 		self.movieid = j['result']['item']['id']
 		p = j['result']['item']['file']
-		if setting('fm_alternate') == 'true' or p.startswith('smb://') or p.startswith('nfs://'):
-			alt_method = True
+		if setting('fm_alternate') == 'true' or p.lower().startswith('smb://') or p.lower().startswith('nfs://'):
 			self.path = xbmc.validatePath(p)
+			self.alt_method = True
 		else:
 			self.path = os.path.abspath(p)
+			self.alt_method = False
 		log("Movie: self.path: %s" % self.path)
 		self.title = j['result']['item']['title']
 		self.playcount = j['result']['item']['playcount']
@@ -32,38 +33,32 @@ class Movie(Video):
 		progress.start_module(lang(30132), self.MOVE_STEPS)
 		try:
 			progress.update(lang(30590)) # detecting library place
-			destination = setting('fm_movies_destination')
-			if alt_method or destination.startswith('smb://') or destination.startswith('nfs://'):
-				lib_destiny = xbmc.validatePath(destination)
-			else:
-				lib_destiny = os.path.abspath(destination)
 			if setting('fm_movies_structure') == '0':
 				lib_source = os.path.dirname(os.path.dirname(self.path))
 			else:
 				lib_source = os.path.dirname(self.path)
-		 	if lib_destiny == lib_source:
+		 	if self.destination == lib_source:
 		 		raise Exception(lang(30607))
 			progress.update(lang(30506)) # moving files
-			destination = lib_destiny
 			source = os.path.dirname(self.path)
 			if setting('fm_movies_structure') == '0': # multiple folders
-				count = utilfile.count_manage_directory(alt_method, source)
+				count = utilfile.count_manage_directory(self.alt_method, source)
 				if not dialog.warning(lang(30132), count):
 					raise Exception(lang(30609))
 				log("Movie: move source (multiple): %s" % source)
-				log("Movie: move destination (multiple): %s" % destination)
-				utilfile.move_directory(alt_method, source, destination)
-				self.path = os.path.join(destination, self.path.split(os.sep)[-2], os.path.basename(self.path))
+				log("Movie: move destination (multiple): %s" % self.destination)
+				utilfile.move_directory(self.alt_method, source, self.destination)
+				self.path = os.path.join(self.destination, self.path.split(os.sep)[-2], os.path.basename(self.path))
 				log("Movie: Self path (lib/title/files.*): %s" % self.path)
 			else: # single folder
 				match = os.path.splitext(os.path.basename(self.path))[0]
-				count = utilfile.count_manage_files(alt_method, source, match)
+				count = utilfile.count_manage_files(self.alt_method, source, match)
 				if not dialog.warning(lang(30132), count):
 					raise Exception(lang(30609))
 				log("Movie: move source (single): %s" % source)
-				log("Movie: move destination (single): %s" % destination)
-				utilfile.move_files(alt_method, source, destination, match)
-				self.path = os.path.join(destination, os.path.basename(self.path))
+				log("Movie: move destination (single): %s" % self.destination)
+				utilfile.move_files(self.alt_method, source, self.destination, match)
+				self.path = os.path.join(self.destination, os.path.basename(self.path))
 				log("Movie: Self path: %s" % self.path)
 			progress.update(lang(30513)) # updating library
 			progress.update_library(self.path)
@@ -87,20 +82,19 @@ class Movie(Video):
 		try:
 			progress.update(lang(30516)) # deleting files
 			source = os.path.dirname(self.path)
-			alt_method = setting('fm_alternate') == 'true'
 			remove_empty = setting('fm_movie_remove_empty') == 'true'
 			if setting('fm_movies_structure') == '0': # multiple folders
-				count = utilfile.count_manage_directory(alt_method, source)
+				count = utilfile.count_manage_directory(self.alt_method, source)
 				if not dialog.warning(lang(30133), count):
 					raise Exception(lang(30609))
-				utilfile.delete_directory(alt_method, source)
+				utilfile.delete_directory(self.alt_method, source)
 			else: # single folder
 				match = os.path.splitext(os.path.basename(self.path))[0]
-				count = utilfile.count_manage_files(alt_method, source, match)
+				count = utilfile.count_manage_files(self.alt_method, source, match)
 				log("Movie: delete match: %s" % match)
 				if not dialog.warning(lang(30133), count):
 					raise Exception(lang(30609))
-				utilfile.delete_files(alt_method, source, match, remove_empty)
+				utilfile.delete_files(self.alt_method, source, match, remove_empty)
 			progress.update(lang(30513)) # updating library
 			progress.update_library(self.path)
 			self.movieid = None
@@ -211,18 +205,21 @@ class Movie(Video):
 
 		# pre settings
 		if move:
-			alt_method = setting('fm_alternate') == 'true'
-			if alt_method:
-				destiny = xbmc.validatePath(setting('fm_movies_destination'))
+			destination = setting('fm_movies_destination')
+			if self.alt_method or destination.lower().startswith('smb://') or destination.lower().startswith('nfs://'):
+				self.destination = xbmc.validatePath(destination)
+				self.alt_method = True
 			else:
-				destiny = os.path.abspath(setting('fm_movies_destination'))
-			while not destiny or destiny == '.':
-				destiny = xbmcgui.Dialog().browse(3, lang(30525) % info('name'), 'files')
-				if alt_method:
-					destiny = xbmc.validatePath(destiny)
+				self.destination = os.path.abspath(destination)
+			while not self.destination or self.destination == '.':
+				destination = xbmcgui.Dialog().browse(3, lang(30525) % info('name'), 'files')
+				if self.alt_method or destination.lower().startswith('smb://') or destination.lower().startswith('nfs://'):
+					self.destination = xbmc.validatePath(destination)
+					self.alt_method = True
 				else:
-					destiny = os.path.abspath(destiny)
-			set_setting('fm_movies_destination', destiny)
+					self.destination = os.path.abspath(destination)
+			log("fm_movies_destination |alt_method=%s|: %s" % (self.alt_method, self.destination))
+			set_setting('fm_movies_destination', self.destination)
 
 		# pre process
 		progress = Progress(steps)

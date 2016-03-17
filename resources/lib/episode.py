@@ -16,12 +16,14 @@ class Episode(Video):
 		self.type = 'episode'
 		self.episodeid = j['result']['item']['id']
 		p = j['result']['item']['file']
-		if setting('fm_alternate') == 'true' or p.startswith('smb://') or p.startswith('nfs://'):
-			alt_method = True
+		if setting('fm_alternate') == 'true' or p.lower().startswith('smb://') or p.lower().startswith('nfs://'):
 			self.path = xbmc.validatePath(p)
+			self.alt_method = True
+			log
 		else:
 			self.path = os.path.abspath(p)
-		log("Episode: self.path: %s" % self.path)
+			self.alt_method = False
+		log("Episode: self.path |alt_method=%s|: %s" % (self.alt_method, self.path))
 		self.title = j['result']['item']['title']
 		self.playcount = j['result']['item']['playcount']
 		self.rating = None
@@ -32,29 +34,23 @@ class Episode(Video):
 		progress.start_module(lang(30132), self.MOVE_STEPS)
 		try:
 			progress.update(lang(30590)) # detecting library place
-			destination = setting('fm_episodes_destination')
-			if alt_method or destination.startswith('smb://') or destination.startswith('nfs://'):
-				lib_destiny = xbmc.validatePath(destination)
-			else:
-				lib_destiny = os.path.abspath(destination)
 	 		lib_source = os.path.dirname(os.path.dirname(os.path.dirname(self.path)))
-		 	if lib_destiny == lib_source:
+		 	if self.destination == lib_source:
 		 		raise Exception(lang(30602))
 			progress.update(lang(30506)) # moving files
-			destination = lib_destiny
 			source = os.path.dirname(self.path)
 			match = os.path.splitext(os.path.basename(self.path))[0]
-			count = utilfile.count_manage_files(alt_method, source, match)
+			count = utilfile.count_manage_files(self.alt_method, source, match)
 			if not dialog.warning(lang(30132), count):
 				raise Exception(lang(30609))
 			log("Episode: move source path: %s" % source)
 			if setting('fm_episodes_structure') == '0': # multiple folders
-				destination = os.path.join(destination, self.path.split(os.sep)[-3], self.path.split(os.sep)[-2])
-				log("Episode: move destination (multiple): %s" % destination)
+				destination = os.path.join(self.destination, self.path.split(os.sep)[-3], self.path.split(os.sep)[-2])
+				log("Episode: move destination (multiple) |alt_method=%s|: %s" % (self.alt_method, destination))
 			else: # single folder
-				destination = os.path.join(destination, self.path.split(os.sep)[-2])
-				log("Episode: move destination (single): %s" % destination)
-			utilfile.move_files(alt_method, source, destination, match, True)
+				destination = os.path.join(self.destination, self.path.split(os.sep)[-2])
+				log("Episode: move destination (single) |alt_method=%s|: %s" % (self.alt_method, destination))
+			utilfile.move_files(self.alt_method, source, destination, match, True)
 			progress.update(lang(30513)) # updating library
 			progress.update_library(self.path)
 			self.path = os.path.join(destination, os.path.basename(self.path))
@@ -81,10 +77,10 @@ class Episode(Video):
 			remove_empty = setting('fm_episodes_remove_empty') == 'true'
 			match = os.path.splitext(os.path.basename(self.path))[0]
 			log("Episode: delete match: %s" % match)
-			count = utilfile.count_manage_files(alt_method, source, match)
+			count = utilfile.count_manage_files(self.alt_method, source, match)
 			if not dialog.warning(lang(30133), count):
 				raise Exception(lang(30609))
-			utilfile.delete_files(alt_method, source, match, remove_empty)
+			utilfile.delete_files(self.alt_method, source, match, remove_empty)
 			progress.update(lang(30513)) # updating library
 			progress.update_library(self.path)
 			self.episodeid = None
@@ -157,21 +153,21 @@ class Episode(Video):
 				steps += self.RATE_LIB_STEPS
 		# pre settings
 		if move:
-			alt_method = setting('fm_alternate') == 'true'
-			if alt_method:
-				destiny = xbmc.validatePath(setting('fm_episodes_destination'))
-				log("fm_episodes_destination (alt_method):  %s" % destiny)
+			destination = setting('fm_episodes_destination')
+			if self.alt_method or destination.lower().startswith('smb://') or destination.lower().startswith('nfs://'):
+				self.destination = xbmc.validatePath(destination)
+				self.alt_method = True
 			else:
-				destiny = os.path.abspath(setting('fm_episodes_destination'))
-				log("fm_episodes_destination:  %s" % destiny)
-			while not destiny or destiny == '.':
-				destiny = xbmcgui.Dialog().browse(3, lang(30525) % info('name'), 'files')
-				if alt_method:
-					destiny = xbmc.validatePath(destiny)
+				self.destination = os.path.abspath(destination)
+			while not self.destination or self.destination == '.':
+				destination = xbmcgui.Dialog().browse(3, lang(30525) % info('name'), 'files')
+				if self.alt_method or destination.lower().startswith('smb://') or destination.lower().startswith('nfs://'):
+					self.destination = xbmc.validatePath(destination)
+					self.alt_method = True
 				else:
-					destiny = os.path.abspath(destiny)
-
-			set_setting('fm_episodes_destination', destiny)
+					self.destination = os.path.abspath(destination)
+			log("set_setting fm_episodes_destination |alt_method=%s|: %s" % (self.alt_method, self.destination))
+			set_setting('fm_episodes_destination', self.destination)
 		# pre context
 		# pre process
 		progress = Progress(steps)
