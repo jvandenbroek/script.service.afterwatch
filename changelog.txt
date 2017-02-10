@@ -1,6 +1,7 @@
 0.9.9 (2017-02-10):
 * Added move or delete, which will first prompt to delete and if not, the move prompt appears afterwards.
  Confirm deleting/moving option must be enabled for this to work, otherwise it defaults to delete.
+* Fixed hanging progress dialog when update library is enabled
 
 0.9.8 (2016-05-13):
 * Move/delete subfolders (1 level deep) and files when moving/deleting movies with

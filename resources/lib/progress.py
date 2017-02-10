@@ -45,6 +45,7 @@ class Progress:
 		log('finish_module: self.current=%s, self.steps=%s' % (self.current, self.steps))
 		if self.current == self.steps:
 			if self.enable:
+				log('finish_module: self.enable=%s' % (self.enable))
 				self.bar.update(100, info('name'), 'Done')
 				monitor.waitForAbort(1)
 				self.bar.close()
@@ -60,9 +61,7 @@ class Progress:
 				xbmc.sleep(20)
 			percent = (self.current-1) * 100 / self.steps
 			if self.enable:
-				if utilxbmc.version() >= 13:
-					self.bar = xbmcgui.DialogProgressBG()
-				else:
-					self.bar = xbmcgui.DialogProgress()
-				self.bar.create(info('name'))
 				self.bar.update(percent, info('name'),  lang(30531) % (self.module_title, lang(30513)))
+			self.current += 1
+			self.module_current += 1
+			log('update_library: self.current=%s, self.module_current=%s' % (self.current, self.module_current))

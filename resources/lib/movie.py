@@ -30,7 +30,7 @@ class Movie(Video):
 
 	MOVE_STEPS = 4
 	def __move(self, progress):
-		progress.start_module(lang(30132), self.MOVE_STEPS)
+		progress.start_module(lang(30131), self.MOVE_STEPS)
 		try:
 			progress.update(lang(30590)) # detecting library place
 			if setting('fm_movies_structure') == '0':
@@ -43,7 +43,7 @@ class Movie(Video):
 			source = os.path.dirname(self.path)
 			if setting('fm_movies_structure') == '0': # multiple folders
 				count = utilfile.count_manage_directory(self.alt_method, source)
-				if not dialog.warning(lang(30132), count):
+				if not dialog.warning(lang(30131), count):
 					raise Exception(lang(30609))
 				log("Movie: move source (multiple): %s" % source)
 				log("Movie: move destination (multiple): %s" % self.destination)
@@ -53,7 +53,7 @@ class Movie(Video):
 			else: # single folder
 				match = os.path.splitext(os.path.basename(self.path))[0]
 				count = utilfile.count_manage_files(self.alt_method, source, match)
-				if not dialog.warning(lang(30132), count):
+				if not dialog.warning(lang(30131), count):
 					raise Exception(lang(30609))
 				log("Movie: move source (single): %s" % source)
 				log("Movie: move destination (single): %s" % self.destination)
@@ -78,21 +78,21 @@ class Movie(Video):
 
 	DELETE_STEPS = 2
 	def __delete(self, progress):
-		progress.start_module(lang(30133), self.DELETE_STEPS)
+		progress.start_module(lang(30132), self.DELETE_STEPS)
 		try:
 			progress.update(lang(30516)) # deleting files
 			source = os.path.dirname(self.path)
 			remove_empty = setting('fm_movie_remove_empty') == 'true'
 			if setting('fm_movies_structure') == '0': # multiple folders
 				count = utilfile.count_manage_directory(self.alt_method, source)
-				if not dialog.warning(lang(30133), count):
+				if not dialog.warning(lang(30132), count):
 					raise Exception(lang(30609))
 				utilfile.delete_directory(self.alt_method, source)
 			else: # single folder
 				match = os.path.splitext(os.path.basename(self.path))[0]
 				count = utilfile.count_manage_files(self.alt_method, source, match)
 				log("Movie: delete match: %s" % match)
-				if not dialog.warning(lang(30133), count):
+				if not dialog.warning(lang(30132), count):
 					raise Exception(lang(30609))
 				utilfile.delete_files(self.alt_method, source, match, remove_empty)
 			progress.update(lang(30513)) # updating library

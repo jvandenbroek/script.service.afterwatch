@@ -31,7 +31,7 @@ class Episode(Video):
 
 	MOVE_STEPS = 4
 	def __move(self, progress):
-		progress.start_module(lang(30132), self.MOVE_STEPS)
+		progress.start_module(lang(30131), self.MOVE_STEPS)
 		try:
 			progress.update(lang(30590)) # detecting library place
 	 		lib_source = os.path.dirname(os.path.dirname(os.path.dirname(self.path)))
@@ -41,7 +41,7 @@ class Episode(Video):
 			source = os.path.dirname(self.path)
 			match = os.path.splitext(os.path.basename(self.path))[0]
 			count = utilfile.count_manage_files(self.alt_method, source, match)
-			if not dialog.warning(lang(30132), count):
+			if not dialog.warning(lang(30131), count):
 				raise Exception(lang(30609))
 			log("Episode: move source path: %s" % source)
 			if setting('fm_episodes_structure') == '0': # multiple folders
@@ -70,7 +70,7 @@ class Episode(Video):
 
 	DELETE_STEPS = 2
 	def __delete(self, progress):
-		progress.start_module(lang(30133), self.DELETE_STEPS)
+		progress.start_module(lang(30132), self.DELETE_STEPS)
 		try:
 			progress.update(lang(30516)) # deleting files
 			source = os.path.dirname(self.path)
@@ -78,7 +78,7 @@ class Episode(Video):
 			match = os.path.splitext(os.path.basename(self.path))[0]
 			log("Episode: delete match: %s" % match)
 			count = utilfile.count_manage_files(self.alt_method, source, match)
-			if not dialog.warning(lang(30133), count):
+			if not dialog.warning(lang(30132), count):
 				raise Exception(lang(30609))
 			utilfile.delete_files(self.alt_method, source, match, remove_empty)
 			progress.update(lang(30513)) # updating library
