@@ -1,9 +1,21 @@
+0.9.9 (2017-02-10):
+* Added move or delete, which will first prompt to delete and if not, the move prompt appears afterwards.
+ Confirm deleting/moving option must be enabled for this to work, otherwise it defaults to delete.
+
+0.9.8 (2016-05-13):
+* Move/delete subfolders (1 level deep) and files when moving/deleting movies with
+  alternate file method or SMB/NFS shares. Standard file method (re)moves full tree (unchanged)
+* Remove hidden files Thumbs.db and .DS_Store if exists when deleting movies (SMB/NFS)
+
+0.9.7 (2016-04-14):
+* Do not move/delete duplicate copies of files not being played (ending with a number, eg '(1)')
+
 0.9.6 (2016-03-17):
 * Always use alternate method if source or destination is a SMB/NFS path (alternate method may be
   deleted in some future version)
 
 0.9.5 (2016-03-16):
-* Added remove from library option (no full clean up necessary)
+* Added remove from library option (full clean-up is no longer necessary)
 * No longer display dialogs for preserve, rating and tagging
 * Fixed infinite hanging when confirmation dialog delay set to 0 (default) or empty
 * Started splitting and cleaning up code

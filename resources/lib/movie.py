@@ -182,14 +182,14 @@ class Movie(Video):
 		if setting('confirm') == 'true':
 			log("Movie: Show confirm dialog")
 			monitor.waitForAbort(int(setting('wait_dialog')))
-		if setting('fm_movies_manage') == '1': # move
+		if setting('fm_movies_manage') == '2' or setting('fm_movies_manage') == '3': # delete
 			if dialog.proceed(self.title, lang(30132)):
-				move = True
-				steps += self.MOVE_STEPS
-		elif setting('fm_movies_manage') == '2': # delete
-			if dialog.proceed(self.title, lang(30133)):
 				delete = True
 				steps += self.DELETE_STEPS
+		if setting('fm_movies_manage') == '1' or (setting('fm_movies_manage') == '3' and not delete): # move
+			if dialog.proceed(self.title, lang(30131)):
+				move = True
+				steps += self.MOVE_STEPS
 		if setting('pt_movies_playcount') == 'true':
 				preserve_playcount = True
 				steps += self.PRESERVE_PLAYCOUNT_STEPS

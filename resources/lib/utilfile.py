@@ -2,6 +2,7 @@
 import os
 import shutil
 import xbmcvfs
+import re
 
 ## PUBLIC MANAGEMENT
 def move_directory(alt_method, source, destination):
@@ -49,6 +50,9 @@ def count_manage_files(alt_method, source, match):
 
 
 ## PRIVATE REGULAR
+def __copy_directory(source, destination):
+	shutil.copytree(source,destination)
+
 def __move_directory(source, destination):
 	shutil.move(source,destination)
 
@@ -60,7 +64,10 @@ def __move_files(source, destination, match, del_empty):
 	files = [f for f in os.listdir(source) if os.path.isfile(os.path.join(source, f))]
 	for f in files:
 		if os.path.splitext(f)[0].startswith(match):
-			shutil.move(os.path.join(source, f), destination)
+			# Don't match copies of files
+			m = re.match(r'^(.((?!\(\d+\)$)))*$', os.path.splitext(f)[0])
+			if re.search(r'(\(\d+\)$)', match) or (m and m.group(0).startswith(match)):
+				shutil.move(os.path.join(source, f), destination)
 	# delete source directory if empty
 	if del_empty and len(os.listdir(source)) == 0:
 		os.rmdir(source)
@@ -73,9 +80,12 @@ def __delete_files(source, match, del_empty):
 	files = [f for f in os.listdir(source) if os.path.isfile(os.path.join(source, f))]
 	for f in files:
 		if os.path.splitext(f)[0].startswith(match):
-			f = os.path.join(source, f)
-			#os.chmod(f, 0777)
-			os.remove(f)
+			# Don't match copies of files
+			m = re.match(r'^(.((?!\(\d+\)$)))*$', os.path.splitext(f)[0])
+			if re.search(r'(\(\d+\)$)', match) or (m and m.group(0).startswith(match)):
+				f = os.path.join(source, f)
+				#os.chmod(f, 0777)
+				os.remove(f)
 	# delete source directory if empty
 	if del_empty and len(os.listdir(source)) == 0:
 		os.rmdir(source)
@@ -91,8 +101,21 @@ def __copy_directory_alt(source, destination):
 		if not xbmcvfs.copy(src, dest):
 			raise ValueError('xbmcvfs.copy', src, dest)
 	for d in dirs:
-		d = os.path.join(source, d)
-		__copy_directory(d, destination)
+		src = os.path.join(source, d)
+		dest = os.path.join(destination, d)
+		if not xbmcvfs.mkdirs(dest):
+			raise ValueError('xbmcvfs.mkdirs', dest)
+		dirs2, files2 = xbmcvfs.listdir(src)
+		for d2 in dirs2:
+			dest2 = os.path.join(dest, d2)
+			if not xbmcvfs.mkdirs(dest2):
+				raise ValueError('xbmcvfs.mkdirs', dest2)
+		for f2 in files2:
+			src2 = os.path.join(src, f2)
+			dest2 = os.path.join(dest, f2)
+			if not xbmcvfs.copy(src2, dest2):
+				raise ValueError('xbmcvfs.copy', src2, dest2)
+#		__copy_directory(d, destination)
 
 def __copy_files_alt(source, destination, match):
 	# create directories if needed
@@ -102,31 +125,62 @@ def __copy_files_alt(source, destination, match):
 	dirs, files = xbmcvfs.listdir(source)
 	for f in files:
 		if os.path.splitext(f)[0].startswith(match):
-			src = os.path.join(source, f)
-			dest = os.path.join(destination, f)
-			if not xbmcvfs.copy(src, dest):
-				raise ValueError('xbmcvfs.copy', src, dest)
+			# Don't match copies of files
+			m = re.match(r'^(.((?!\(\d+\)$)))*$', os.path.splitext(f)[0])
+			if re.search(r'(\(\d+\)$)', match) or (m and m.group(0).startswith(match)):
+				src = os.path.join(source, f)
+				dest = os.path.join(destination, f)
+				if not xbmcvfs.copy(src, dest):
+					raise ValueError('xbmcvfs.copy', src, dest)
 
 def __delete_directory_alt(source):
+	hidden = ['Thumbs.db','.DS_Store']
 	dirs, files = xbmcvfs.listdir(source)
 	for d in dirs:
 		d = os.path.join(source, d)
+		dirs2, files2 = xbmcvfs.listdir(d)
+		for d2 in dirs2:
+			d2 = os.path.join(d, d2)
+			if not xbmcvfs.rmdir(d2):
+				raise ValueError('xbmcvfs.rmdir', d2)
+		for f2 in files2:
+			f2 = os.path.join(d, f2)
+			if not xbmcvfs.delete(f2):
+				raise ValueError('xbmcvfs.delete', f2)
+		for h in hidden:
+			h = os.path.join(d, h)
+			if xbmcvfs.exists(h):
+				if not xbmcvfs.delete(h):
+					raise ValueError('xbmcvfs.delete', h)
 		if not xbmcvfs.rmdir(d):
 			raise ValueError('xbmcvfs.rmdir', d)
+
 	for f in files:
 		f = os.path.join(source, f)
-		xbmcvfs.delete(f)
+		if not xbmcvfs.delete(f):
+			raise ValueError('xbmcvfs.delete', f)
+	for h in hidden:
+		h = os.path.join(source, h)
+		if xbmcvfs.exists(h):
+			if not xbmcvfs.delete(h):
+				raise ValueError('xbmcvfs.delete', h)
+
 	if not xbmcvfs.rmdir(source):
 		raise ValueError('xbmcvfs.rmdir', source)
+
+
 
 def __delete_files_alt(source, match, del_empty):
 	# delete files from source if match
 	dirs, files = xbmcvfs.listdir(source)
 	for f in files:
 		if os.path.splitext(f)[0].startswith(match):
-			f = os.path.join(source, f)
-			if not xbmcvfs.delete(f):
-				raise ValueError('xbmcvfs.delete', f)
+			# Don't match copies of files
+			m = re.match(r'^(.((?!\(\d+\)$)))*$', os.path.splitext(f)[0])
+			if re.search(r'(\(\d+\)$)', match) or (m and m.group(0).startswith(match)):
+				f = os.path.join(source, f)
+				if not xbmcvfs.delete(f):
+					raise ValueError('xbmcvfs.delete', f)
 	# delete source directory if empty
 	if del_empty and len(xbmcvfs.listdir(source)) == 0:
 		if not xbmcvfs.rmdir(source):

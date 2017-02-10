@@ -136,14 +136,14 @@ class Episode(Video):
 			wait_dialog = setting('wait_dialog')
 			if not (wait_dialog == '' or wait_dialog == '0'):
 				monitor.waitForAbort(int(wait_dialog))
-		if setting('fm_episodes_manage') == '1': # move
+		if setting('fm_episodes_manage') == '2' or setting('fm_episodes_manage') == '3': # delete
 			if dialog.proceed(self.title, lang(30132)):
-				move = True
-				steps += self.MOVE_STEPS
-		elif setting('fm_episodes_manage') == '2': # delete
-			if dialog.proceed(self.title, lang(30133)):
 				delete = True
 				steps += self.DELETE_STEPS
+		if setting('fm_episodes_manage') == '1' or (setting('fm_episodes_manage') == '3' and not delete): # move
+			if dialog.proceed(self.title, lang(30131)):
+				move = True
+				steps += self.MOVE_STEPS
 		if not setting('remove_video') == 'true':
 			if setting('pt_episodes_playcount') == 'true':
 				preserve_playcount = True
