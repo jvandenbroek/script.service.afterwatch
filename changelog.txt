@@ -1,4 +1,4 @@
-1.0.0 (2018-02-23):
+1.0.0 (2017-02-23):
 * Implemented exclude list. Eg. 'backup, archive' will match all paths
   containing backup and/or archive (matches both dirs and files). You can supply
   as many words or full paths as you want, as long as you separate them by comma.
