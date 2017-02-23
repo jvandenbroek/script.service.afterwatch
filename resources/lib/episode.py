@@ -125,6 +125,11 @@ class Episode(Video):
 
 	def ended(self):
 		log("Episode: Playback ended")
+		excludelist = setting('fm_episodes_excludelist').lower().split(',')
+		log("Episode: Exclude list: %s" % excludelist)
+		if any(self.path.lower().find (v.strip()) >= 1 for v in excludelist):
+			log("Episode: Exclude matched, exiting")
+			return;
 		# pre confirm
 		steps = 0
 		move = False
