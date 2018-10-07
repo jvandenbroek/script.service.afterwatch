@@ -101,9 +101,9 @@ def __delete_files(source, match, del_empty):
 		try:
 			if count > 0:
 				for h in hidden:
-					log("delete_files: os.remove: %s - count: %s" % (h, count))
 					h = os.path.join(source, h)
 					if os.path.isfile(h):
+						log("delete_files: os.remove: %s - count: %s" % (h, count))
 						try:
 							os.remove(h)
 						except OSError:
