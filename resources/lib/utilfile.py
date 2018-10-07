@@ -78,6 +78,8 @@ def __delete_directory(source):
 
 def __delete_files(source, match, del_empty):
 	# delete files from source if match
+	count = 0
+	hidden = ['Thumbs.db','.DS_Store']
 	files = [f for f in os.listdir(source) if os.path.isfile(os.path.join(source, f))]
 	for f in files:
 		if os.path.splitext(f)[0].startswith(match):
@@ -87,10 +89,20 @@ def __delete_files(source, match, del_empty):
 				f = os.path.join(source, f)
 				#os.chmod(f, 0777)
 				os.remove(f)
+		for h in hidden:
+			if os.path.splitext(f)[0].startswith(h):
+				count += 1
 	# delete source directory if empty
 	log("delete_files: %s - len(os.listdir): %s" % (source, len(os.listdir(source))))
-	if del_empty and len(os.listdir(source)) == 0:
+	if del_empty and len(os.listdir(source)) == count:
 		try:
+			if count > 0:
+				for h in hidden:
+					log("delete_files: os.remove: %s - count: %s" % (h, count))
+					try:
+						os.remove(h)
+					except OSError:
+						pass
 			os.rmdir(source)
 		except OSError:
 			raise ValueError('os.rmdir', source)
