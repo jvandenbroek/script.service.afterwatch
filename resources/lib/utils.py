@@ -94,3 +94,9 @@ def ValueErrorHandler(err):
 	if err[0] == 'xbmcvfs.copy':
 		log("ValueError Exception: Error copying %s to %s" % (err[1], err[2]))
 		dialog.error(lang(30614) + ' %s -> %s' % (err[1], err[2]))
+	if err[0] == 'os.remove':
+		log("ValueError Exception: Error removing file: %s" % err[1])
+		dialog.error(lang(30613) + ' %s' % err[1])
+	if err[0] == 'os.rmdir':
+		log("ValueError Exception: Error removing folder: %s" % err[1])
+		dialog.error(lang(30612) + ' %s' % err[1])

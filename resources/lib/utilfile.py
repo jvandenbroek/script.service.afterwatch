@@ -88,7 +88,10 @@ def __delete_files(source, match, del_empty):
 			if re.search(r'(\(\d+\)$)', match) or (m and m.group(0).startswith(match)):
 				f = os.path.join(source, f)
 				#os.chmod(f, 0777)
-				os.remove(f)
+				try:
+					os.remove(f)
+				except OSError:
+					raise ValueError('os.remove', f)
 		for h in hidden:
 			if os.path.splitext(f)[0].startswith(h):
 				count += 1
@@ -100,7 +103,11 @@ def __delete_files(source, match, del_empty):
 				for h in hidden:
 					log("delete_files: os.remove: %s - count: %s" % (h, count))
 					try:
-						os.remove(os.path.join(source, h))
+						h = os.path.join(source, h)
+						if os.path.isfile(h):
+							os.remove(h)
+						except OSError:
+							raise ValueError('os.remove', h)
 					except OSError:
 						pass
 			os.rmdir(source)

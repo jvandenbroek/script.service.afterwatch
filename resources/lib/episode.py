@@ -86,8 +86,8 @@ class Episode(Video):
 			progress.update_library(self.path)
 			self.episodeid = None
 			self.path = None
-		except OSError:
-			dialog.error(lang(30610))
+#		except OSError:
+#			dialog.error(lang(30610))
 		except ValueError as err:
 			ValueErrorHandler(err)
 		except Exception, e:
