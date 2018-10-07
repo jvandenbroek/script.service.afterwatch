@@ -26,13 +26,13 @@ class AfterWatchPlayer(xbmc.Player):
 
 
 	def onPlayBackEnded(self):
-		if self.playing:
+		if hasattr(self, 'playing') and self.playing:
 			self.playing.ended()
 			self.playing = None
 
 
 	def onPlayBackStopped(self):
-		if self.playing:
+		if hasattr(self, 'playing') and self.playing:
 			percent = self.current * 100 / self.time
 			minimum = float(setting('assume'))
 			if minimum <= percent:
