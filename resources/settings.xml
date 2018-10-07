@@ -13,7 +13,8 @@
 		<setting label="30101" id="fm_episodes_destination" type="folder" source="video" enable="eq(-1,1)|eq(-1,3)"/>
 		<setting label="30111" id="fm_episodes_structure" type="enum" lvalues="30136|30137" default="0" enable="!eq(-2,0)"/>
 		<setting label="30112" id="fm_episodes_remove_empty" type="bool" default="true" enable="!eq(-3,0)"/>
-		<setting label="30113" id="fm_episodes_excludelist" type="text" default="" enable="!eq(-4,0)"/>
+		<setting label="30112" id="fm_episodes_remove_empty_showdir" type="bool" default="true" enable="!eq(-4,0)"/>
+		<setting label="30113" id="fm_episodes_excludelist" type="text" default="" enable="!eq(-5,0)"/>
 	</category>
 	<!-- PROPERTIES -->
 	<category label="30700">

@@ -75,12 +75,13 @@ class Episode(Video):
 			progress.update(lang(30516)) # deleting files
 			source = os.path.dirname(self.path)
 			remove_empty = setting('fm_episodes_remove_empty') == 'true'
+			remove_empty_showdir = setting('fm_episodes_remove_empty_showdir') == 'true'
 			match = os.path.splitext(os.path.basename(self.path))[0]
 			log("Episode: delete match: %s" % match)
 			count = utilfile.count_manage_files(self.alt_method, source, match)
 			if not dialog.warning(lang(30132), count):
 				raise Exception(lang(30609))
-			utilfile.delete_files(self.alt_method, source, match, remove_empty)
+			utilfile.delete_files(self.alt_method, source, match, remove_empty, remove_empty_showdir)
 			progress.update(lang(30513)) # updating library
 			progress.update_library(self.path)
 			self.episodeid = None

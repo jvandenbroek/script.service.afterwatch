@@ -3,6 +3,7 @@ import os
 import shutil
 import xbmcvfs
 import re
+from utils import log
 
 ## PUBLIC MANAGEMENT
 def move_directory(alt_method, source, destination):
@@ -87,8 +88,12 @@ def __delete_files(source, match, del_empty):
 				#os.chmod(f, 0777)
 				os.remove(f)
 	# delete source directory if empty
+	log("delete_files: %s - len(os.listdir): %s" % (source, len(os.listdir(source))))
 	if del_empty and len(os.listdir(source)) == 0:
-		os.rmdir(source)
+		try:
+			os.rmdir(source)
+		except OSError:
+			raise ValueError('os.rmdir', source)
 
 def __copy_directory_alt(source, destination):
 	destination = os.path.join(destination, os.path.basename(source))
