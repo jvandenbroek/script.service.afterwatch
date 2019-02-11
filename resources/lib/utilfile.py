@@ -84,26 +84,30 @@ def __delete_files(source, match, del_empty):
 	for f in files:
 		if os.path.splitext(f)[0].startswith(match):
 			# Don't match copies of files
-			m = re.match(r'^(.((?!\(\d+\)$)))*$', os.path.splitext(f)[0])
-			if re.search(r'(\(\d+\)$)', match) or (m and m.group(0).startswith(match)):
-				f = os.path.join(source, f)
-				#os.chmod(f, 0777)
-				try:
-					os.remove(f)
-				except OSError:
-					raise ValueError('os.remove', f)
-		for h in hidden:
-			if os.path.splitext(f)[0].startswith(h):
-				count += 1
+			if not re.search(r'(\(\d+\)$)', match):
+				m = re.match(r'^(.((?!\(\d+\)$)))*$', os.path.splitext(f)[0])
+				if not (m and m.group(0).startswith(match)):
+					continue
+			f = os.path.join(source, f)
+			#os.chmod(f, 0777)
+			try:
+				log("delete_files: os.remove: f=%s" % (f))
+				os.remove(os.path.realpath(f))
+			except OSError as e:
+				raise ValueError('os.remove (' + e.errno + ')', os.path.realpath(f))
+		else:
+			for h in hidden:
+				if os.path.splitext(f)[0].startswith(h):
+					count += 1
 	# delete source directory if empty
-	log("delete_files: %s - len(os.listdir): %s" % (source, len(os.listdir(source))))
-	if del_empty and len(os.listdir(source)) == count:
+	length = len(os.listdir(source))
+	log("delete_files: del_emtpy=%d, length=%d, count=%d, source=%s" % (del_empty, length, count, source))
+	if del_empty and length == count:
 		try:
 			if count > 0:
 				for h in hidden:
-					h = os.path.join(source, h)
-					if os.path.isfile(h):
-						log("delete_files: os.remove: %s - count: %s" % (h, count))
+					if os.path.isfile(os.path.join(source, h)):
+						log("delete_files: os.remove: f=%s, count=%s" % (h, count))
 						try:
 							os.remove(h)
 						except OSError:
@@ -194,19 +198,41 @@ def __delete_directory_alt(source):
 
 def __delete_files_alt(source, match, del_empty):
 	# delete files from source if match
+	count = 0
+	hidden = ['Thumbs.db','.DS_Store']
 	dirs, files = xbmcvfs.listdir(source)
+	files = [f for f in os.listdir(source) if os.path.isfile(os.path.join(source, f))]
 	for f in files:
 		if os.path.splitext(f)[0].startswith(match):
 			# Don't match copies of files
-			m = re.match(r'^(.((?!\(\d+\)$)))*$', os.path.splitext(f)[0])
-			if re.search(r'(\(\d+\)$)', match) or (m and m.group(0).startswith(match)):
-				f = os.path.join(source, f)
+			if not re.search(r'(\(\d+\)$)', match):
+				m = re.match(r'^(.((?!\(\d+\)$)))*$', os.path.splitext(f)[0])
+				if not (m and m.group(0).startswith(match)):
+					continue
+			f = os.path.join(source, f)
+			log("xbmcvfs.delete: f=%s" % (f))
+			if not xbmcvfs.delete(f):
+				raise ValueError('xbmcvfs.delete', f)
+		else:
+			for h in hidden:
+				if os.path.splitext(f)[0].startswith(h):
+					count += 1
+
+	# delete source directory if empty
+	dirs, files = xbmcvfs.listdir(source)
+	length = len(files)
+	log("xbmcvfs.rmdir: del_empty=%d, length=%d, count=%d, source=%s" % (del_empty, length, count, source))
+	if del_empty and length == count:
+		if count > 0:
+			for h in hidden:
+				f = os.path.join(source, h)
+				log("xbmcvfs.delete: f=%s, count=%d" % (f, count))
 				if not xbmcvfs.delete(f):
 					raise ValueError('xbmcvfs.delete', f)
-	# delete source directory if empty
-	if del_empty and len(xbmcvfs.listdir(source)) == 0:
+		log("xbmcvfs.rmdir: source=%s" % (source))
 		if not xbmcvfs.rmdir(source):
 			raise ValueError('xbmcvfs.rmdir', source)
+
 
 ## PRIVATE COUNT
 def __count_manage_directory(source):

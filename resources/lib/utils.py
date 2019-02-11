@@ -31,25 +31,25 @@ from threading import Condition
 __addon__ = xbmcaddon.Addon()
 
 
-def log(msg, level=xbmc.LOGDEBUG):
-	if setting('debug') == 'true':
-		xbmc.log(('[%s] %s' % (info('name'), msg)), level)
+def log(msg, level=xbmc.LOGNOTICE):
+    if setting('debug') == 'true' or level >= xbmc.LOGWARNING:
+        xbmc.log(('[%s] %s' % (info('name'), msg)), level)
 
 
 def info(id):
-	return __addon__.getAddonInfo(id)
+    return __addon__.getAddonInfo(id)
 
 
 def lang(id):
-	return  __addon__.getLocalizedString(id)
+    return  __addon__.getLocalizedString(id)
 
 
 def setting(id):
-	return __addon__.getSetting(id)
+    return __addon__.getSetting(id)
 
 
 def set_setting(id, val):
-	__addon__.setSetting(id, val)
+    __addon__.setSetting(id, val)
 
 
 def encode_path(path):
@@ -82,21 +82,21 @@ def rpc(method, **params):
 
 
 def ValueErrorHandler(err):
-	if err[0] == 'xbmcvfs.mkdirs':
-		log("ValueError Exception: Error creating folder: %s" % err[1])
-		dialog.error(lang(30611) + ' %s' % err[1])
-	if err[0] == 'xbmcvfs.rmdir':
-		log("ValueError Exception: Error removing folder: %s" % err[1])
-		dialog.error(lang(30612) + ' %s' % err[1])
-	if err[0] == 'xbmcvfs.delete':
-		log("ValueError Exception: Error removing file: %s" % err[1])
-		dialog.error(lang(30613) + ' %s' % err[1])
-	if err[0] == 'xbmcvfs.copy':
-		log("ValueError Exception: Error copying %s to %s" % (err[1], err[2]))
-		dialog.error(lang(30614) + ' %s -> %s' % (err[1], err[2]))
-	if err[0] == 'os.remove':
-		log("ValueError Exception: Error removing file: %s" % err[1])
-		dialog.error(lang(30613) + ' %s' % err[1])
-	if err[0] == 'os.rmdir':
-		log("ValueError Exception: Error removing folder: %s" % err[1])
-		dialog.error(lang(30612) + ' %s' % err[1])
+    if err[0] == 'xbmcvfs.mkdirs':
+        log("ValueError Exception: Error creating folder: %s" % err[1])
+        dialog.error(lang(30611) + ' %s' % err[1])
+    if err[0] == 'xbmcvfs.rmdir':
+        log("ValueError Exception: Error removing folder: %s" % err[1])
+        dialog.error(lang(30612) + ' %s' % err[1])
+    if err[0] == 'xbmcvfs.delete':
+        log("ValueError Exception: Error removing file: %s" % err[1])
+        dialog.error(lang(30613) + ' %s' % err[1])
+    if err[0] == 'xbmcvfs.copy':
+        log("ValueError Exception: Error copying %s to %s" % (err[1], err[2]))
+        dialog.error(lang(30614) + ' %s -> %s' % (err[1], err[2]))
+    if err[0] == 'os.remove':
+        log("ValueError Exception: Error removing file: %s" % err[1])
+        dialog.error(lang(30613) + ' %s' % err[1])
+    if err[0] == 'os.rmdir':
+        log("ValueError Exception: Error removing folder: %s" % err[1])
+        dialog.error(lang(30612) + ' %s' % err[1])

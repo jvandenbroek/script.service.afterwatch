@@ -3,8 +3,7 @@ import xbmc
 import xbmcgui
 import utilxbmc
 import videolibrary
-from utils import info, lang, setting
-from utils import log
+from utils import info, lang, setting, log
 
 monitor = xbmc.Monitor()
 
@@ -59,7 +58,7 @@ class Progress:
 				pass
 			while xbmc.getCondVisibility('Library.IsScanningVideo'):
 				xbmc.sleep(20)
-			percent = (self.current-1) * 100 / self.steps
+			percent = (self.current - 1) * 100 / self.steps
 			if self.enable:
 				self.bar.update(percent, info('name'),  lang(30531) % (self.module_title, lang(30513)))
 			self.current += 1

@@ -1,3 +1,29 @@
+1.0.5 (2019-02-11):
+* Fix removing empty dir when using alt file method (forced on nfs/smb shares)
+* Moved some settings from advanced to properties
+* Remove video from library is now visible again under properties
+* Some better error checking
+* Added tv show name in confirmation dialogs
+- Rating section not enabled on v18.0 (Leia) due this bug: https://github.com/xbmc/xbmc/issues/15252
+  Should work again when fixed in upstream Kodi
+
+1.0.4 (2019-02-07):
+* Assume watched after xx percent is working again
+* Retry getting player info on playback start
+
+1.0.3 (2019-02-06):
+* Fixed bug with processing movies caused by previous update
+
+1.0.2 (2019-02-05):
+* Implemented debug class providing better in-depth debugging
+* Catch division error or other exceptions on playback stop (noticed on Leia)
+* Turn off display on Linux supported when CEC available and cec-client installed
+* Option to auto close confirmation dialogs after set period
+* Other small fixes
+
+1.0.1 (2018-11-01):
+* Follow symlink when deleting files
+
 1.0.0 (2017-02-23):
 * Implemented exclude list. Eg. 'backup, archive' will match all paths
   containing backup and/or archive (matches both dirs and files). You can supply
@@ -139,7 +165,3 @@
 * New icon and data
 
 0.2.1 (22-04-2013):
-* Bugfix: rating in library not set when moving
-
-0.1.0 (20-04-2013):
-* Initial release!
