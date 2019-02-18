@@ -20,15 +20,28 @@ class AfterWatchMonitor(xbmc.Monitor):
 
 ## PLAYER
 class AfterWatchPlayer(xbmc.Player):
-    def onPlayBackStarted(self):
-        self.playing = None
-        try:
-            for x in range(3): # retry 2 times before giving up
-                try:
-                    j = utilxbmc.xjson({ "jsonrpc": "2.0", "method": "Player.GetActivePlayers", "id": 1 })
-                    t = j[0]['type']
-                    i = j[0]['playerid']
-                except (IndexError, TypeError) as e:
+    def checkPlayBackStarted(self, startup=False):
+        if hasattr(self, 'playing') and self.playing:
+            return
+
+        for x in range(3): # retry 2 times before giving up
+            try:
+                j = utilxbmc.xjson({ "jsonrpc": "2.0", "method": "Player.GetActivePlayers", "id": 1 })
+                t = j[0]['type']
+                i = j[0]['playerid']
+                log("onPlayBackStarted: t=%s, i=%s" % (t, i))
+                if t == 'video':
+                    j = utilxbmc.xjson({ "jsonrpc": "2.0", "method": "Player.GetItem", "params": { "playerid": i }, "id": 1 })
+                    type = j['item']['type']
+                    log("onPlayBackStarted: type=%s" % type)
+                    if type == 'movie':
+                        self.playing = Movie()
+                        self.__time()
+                    elif type == 'episode':
+                        self.playing = Episode()
+                        self.__time()
+            except (IndexError, TypeError):
+                if not startup:
                     log("onPlayBackStarted: Can't retrieve active player status, retrying.. %d" % x, xbmc.LOGWARNING)
                     if monitor.waitForAbort(1):
                         break
@@ -36,34 +49,24 @@ class AfterWatchPlayer(xbmc.Player):
                         continue
                     else:
                         log("onPlayBackStarted: Could not get player info, giving up!", xbmc.LOGERROR)
-                        raise
-                break
-            log("onPlayBackStarted: t=%s, i=%s" % (t, i))
-            if t == 'video':
-                j = utilxbmc.xjson({ "jsonrpc": "2.0", "method": "Player.GetItem", "params": { "playerid": i }, "id": 1 })
-                type = j['item']['type']
-                log("onPlayBackStarted: type=%s" % type)
-                if type == 'movie':
-                    self.playing = Movie()
-                    self.__time()
-                elif type == 'episode':
-                    self.playing = Episode()
-                    self.__time()
-        except Exception as e:
-            if debug.get():
-                log(debug.traceback.print_exc(), xbmc.LOGERROR)
-            debug.exception_dialog(e)
-            self.playing = None
+                self.playing = None
+            except Exception:
+                self.playing = None
+                if debug.get():
+                    log(debug.traceback.print_exc(), xbmc.LOGERROR)
+                return
+            break
+
+    def onPlayBackStarted(self):
+        self.checkPlayBackStarted()
 
     def onPlayBackEnded(self):
         try:
             if hasattr(self, 'playing') and self.playing:
                 self.playing.ended()
-                self.playing = None
-        except Exception as e:
+        except Exception:
             if debug.get():
                 log(debug.traceback.print_exc(), xbmc.LOGERROR)
-            debug.exception_dialog(e)
         finally:
             self.playing = None
 
@@ -78,11 +81,9 @@ class AfterWatchPlayer(xbmc.Player):
                 if minimum <= percent:
                     self.playing.ended()
                 log("AfterWatchPlayer.onPlayBackStopped: percent=%d, self.total_time=%d, self.current=%d" % (percent, self.total_time, self.current))
-                self.playing = None
-        except Exception as e:
+        except Exception:
             if debug.get():
                 log(debug.traceback.print_exc(), xbmc.LOGERROR)
-            debug.exception_dialog(e)
         finally:
             self.playing = None
 
@@ -98,13 +99,13 @@ class AfterWatchPlayer(xbmc.Player):
                     if monitor.waitForAbort(5):
                         break
             log("AfterWatchPlayer.__time: self.current=%d, self.total_time=%d" % (self.current, self.total_time))
-        except Exception as e:
+        except Exception:
             if debug.get():
                 log(debug.traceback.print_exc(), xbmc.LOGERROR)
-            debug.exception_dialog(e)
 
 monitor = AfterWatchMonitor()
 player = AfterWatchPlayer()
 log("started")
+player.checkPlayBackStarted(True)
 monitor.waitForAbort()
 log("stopped")

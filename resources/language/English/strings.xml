@@ -10,7 +10,7 @@
 	<string id="30101">Destination</string>
 	<string id="30111">Folder structure</string>
 	<string id="30112">Remove empty directories</string>
-	<string id="30113">Excluded word list, comma separated</string>
+	<string id="30113">Exclude word list, comma separated</string>
 	<string id="30130">Disabled</string>
 	<string id="30131">Move</string>
 	<string id="30132">Delete</string>

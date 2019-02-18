@@ -20,12 +20,11 @@ class Movie(Video):
             })
             self.type = 'movie'
             self.movieid = j['item']['id']
-            p = j['item']['file']
-            if setting('fm_alternate') == 'true' or [y for y in ("smb://", "nfs://") if p.lower().startswith(y)]:
-                self.path = xbmc.validatePath(p)
+            self.path = j['item']['file']
+            if setting('fm_alternate') == 'true' or [y for y in ("smb://", "nfs://") if self.path.lower().startswith(y)]:
                 self.alt_method = True
             else:
-                self.path = os.path.abspath(p)
+                self.path = os.path.abspath(self.path)
                 self.alt_method = False
             log("Movie: self.path=%s, alt_method=%s" % (self.path, self.alt_method))
             self.title = j['item']['title']
@@ -189,7 +188,7 @@ class Movie(Video):
     def ended(self):
         excludelist = setting('fm_movies_excludelist').lower().split(',')
         log("Movie.ended: excludelist=%s" % excludelist)
-        if any(self.path.lower().find (v.strip()) >= 1 for v in excludelist):
+        if any(self.path.lower().find(v.strip()) >= 1 for v in excludelist):
             log("Movie.ended: Exclude word matched, stop further processing")
             return
         # pre confirm
@@ -202,7 +201,7 @@ class Movie(Video):
         rate_tag = False
         if setting('confirm') == 'true':
             wait_dialog = setting('wait_dialog')
-            log("Movie.ended: confirm dialog %d sec delayed" % wait_dialog)
+            log("Movie.ended: confirm dialog %s sec delayed" % wait_dialog)
             monitor.waitForAbort(int(setting('wait_dialog')))
         if setting('fm_movies_manage') == '2' or setting('fm_movies_manage') == '3': # delete
             if dialog.proceed(self.title, lang(30132)):

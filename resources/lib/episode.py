@@ -21,12 +21,11 @@ class Episode(Video):
             })
             self.type = 'episode'
             self.episodeid = j['item']['id']
-            p = j['item']['file']
-            if setting('fm_alternate') == 'true' or [y for y in ("smb://", "nfs://") if p.lower().startswith(y)]:
-                self.path = xbmc.validatePath(p)
+            self.path = j['item']['file']
+            if setting('fm_alternate') == 'true' or [y for y in ("smb://", "nfs://") if self.path.lower().startswith(y)]:
                 self.alt_method = True
             else:
-                self.path = os.path.abspath(p)
+                self.path = os.path.abspath(self.path)
                 self.alt_method = False
             log("Episode: self.path=%s, self.alt_method=%s" % (self.path, self.alt_method))
             self.title = j['item']['title']
@@ -140,7 +139,7 @@ class Episode(Video):
     def ended(self):
         excludelist = setting('fm_episodes_excludelist').lower().split(',')
         log("Episode.ended: excludelist=%s" % excludelist)
-        if any(self.path.lower().find (v.strip()) >= 1 for v in excludelist):
+        if any(self.path.lower().find(v.strip()) >= 1 for v in excludelist):
             log("Episode.ended: Exclude word matched, stop further processing")
             return
         # pre confirm

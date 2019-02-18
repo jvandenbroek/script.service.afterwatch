@@ -1,3 +1,14 @@
+1.0.8 (2019-02-15):
+* Remove unnecessary debug dialogs
+* Check on add-on start-up if already playing a video
+
+1.0.7 (2019-02-12):
+* Fix alternative method delete
+
+1.0.6 (2019-02-11):
+* Fixup screwups previous release ;-)
+* Removed obsolete validatePath function breaking paths containing double slashes
+
 1.0.5 (2019-02-11):
 * Fix removing empty dir when using alt file method (forced on nfs/smb shares)
 * Moved some settings from advanced to properties

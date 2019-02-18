@@ -4,6 +4,7 @@ import shutil
 import xbmcvfs
 import re
 from utils import log
+from debug import debug
 
 ## PUBLIC MANAGEMENT
 def move_directory(alt_method, source, destination):
@@ -201,7 +202,6 @@ def __delete_files_alt(source, match, del_empty):
 	count = 0
 	hidden = ['Thumbs.db','.DS_Store']
 	dirs, files = xbmcvfs.listdir(source)
-	files = [f for f in os.listdir(source) if os.path.isfile(os.path.join(source, f))]
 	for f in files:
 		if os.path.splitext(f)[0].startswith(match):
 			# Don't match copies of files
@@ -221,6 +221,11 @@ def __delete_files_alt(source, match, del_empty):
 	# delete source directory if empty
 	dirs, files = xbmcvfs.listdir(source)
 	length = len(files)
+	if del_empty and length > 0 and debug.get():
+		files_left = ""
+		if length > 1:
+			files_left = "%s (and %d more)" % (files[0], length - 1)
+		log("xbmcvfs.listdir: file(s) left in folder=%s" % files_left)
 	log("xbmcvfs.rmdir: del_empty=%d, length=%d, count=%d, source=%s" % (del_empty, length, count, source))
 	if del_empty and length == count:
 		if count > 0:
